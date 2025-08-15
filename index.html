@@ -1,0 +1,5172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#ffffff">
+    <title>Lover</title>
+    <style>
+        /* 导入Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Noto+Serif:wght@400;500;600&display=swap');
+
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Serif', serif;
+}
+
+body {
+    background-color: #f5f5f7;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNDAsIDI0MCwgMjQwLCAwLjgpIj48L3JlY3Q+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIj48L3JlY3Q+PC9zdmc+');
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 导航栏样式 */
+.nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f9e6e6;
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.nav-item {
+    cursor: pointer;
+    font-size: 22px;
+    color: #888;
+    transition: all 0.3s;
+    position: relative;
+    padding: 5px 10px;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: #333;
+}
+
+.nav-item.active:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 3px;
+    background-color: #f9e6e6;
+    border-radius: 3px;
+}
+
+/* 页面容器 */
+.page {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 首页样式 */
+.home-header {
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    height: 260px;
+}
+
+/* 实时时间显示 */
+.real-time {
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px 15px;
+    font-size: 1.2em;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* 心情文本样式 */
+.mood-text {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 5px 15px;
+}
+
+.mood-line {
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.4;
+    min-height: 24px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.mood-line:hover {
+    background-color: rgba(249, 230, 230, 0.3);
+    cursor: text;
+}
+
+.mood-line:focus {
+    outline: none;
+    background-color: rgba(249, 230, 230, 0.5);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.avatar-container {
+    position: relative;
+    height: 100%;
+}
+
+.avatar-frame {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.avatar-frame:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 2px rgba(200, 200, 200, 0.5);
+    z-index: 2;
+}
+
+.avatar-frame.left {
+    left: calc(50% - 230px);
+    top: 20px;
+    z-index: 1;
+    transform: rotate(-5deg);
+}
+
+.avatar-frame.right {
+    right: calc(50% - 230px);
+    top: 20px;
+    z-index: 2;
+    transform: rotate(5deg);
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar-upload {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #aaa;
+    font-size: 40px;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.profile {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #f9e6e6;
+    border-radius: 20px;
+    margin: 0 0 10px 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.profile h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #666;
+    font-weight: normal;
+    font-family: 'Noto Serif', serif;
+    font-size: 1.5em;
+    border-bottom: 1px dashed #f9e6e6;
+    padding-bottom: 5px;
+}
+
+.profile-field {
+    margin-bottom: 10px;
+}
+
+.profile-field label {
+    display: block;
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 3px;
+}
+
+.profile-field input, .profile-field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #f9e6e6;
+    border-radius: 15px;
+    font-size: 0.9em;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.profile-field textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.anniversary-preview {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.anniversary-item {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #f9e6e6;
+    border-radius: 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.anniversary-item:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* 故事页面样式 */
+.story-container {
+    margin-bottom: 20px;
+}
+
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.story-title {
+    font-size: 1.4em;
+    color: #666;
+    font-weight: normal;
+    font-family: 'Noto Serif', serif;
+}
+
+.btn {
+    padding: 8px 15px;
+    background-color: #f5f5f7;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #666;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-add {
+    background-color: #f9e6e6;
+    color: #666;
+}
+
+.btn-add:hover {
+    background-color: #f7d7d7;
+}
+
+.story-chapter {
+    margin-bottom: 15px;
+    border: 1px solid #f9e6e6;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.chapter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+.chapter-title {
+    font-weight: normal;
+    color: #666;
+    font-size: 1em;
+}
+
+.chapter-actions {
+    display: flex;
+}
+
+.btn-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    font-size: 1.1em;
+    margin-left: 5px;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #666;
+}
+
+.chapter-content {
+    padding: 15px;
+    background-color: #fff;
+}
+
+.chapter-content textarea {
+    width: 100%;
+    min-height: 150px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.95em;
+    resize: vertical;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* IF线页面样式 */
+.if-container {
+    margin-bottom: 20px;
+}
+
+.notebook-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
+
+.notebook-item {
+    flex: 0 0 auto;
+    width: 100px;
+    height: 140px;
+    background-color: #f9e6e6;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.notebook-delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    color: #999;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.notebook-delete:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #666;
+}
+
+.notebook-item.active {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.notebook-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.notebook-add {
+    flex: 0 0 auto;
+    width: 100px;
+    height: 140px;
+    background-color: #f0f8ff;
+    color: #4682b4;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+}
+
+.notebook-add:hover {
+    background-color: #e6f2ff;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.if-chapters {
+    margin-top: 15px;
+}
+
+/* 纪念日页面样式 */
+.anniversary-container {
+    margin-bottom: 20px;
+}
+
+.anniversary-list {
+    margin-top: 15px;
+}
+
+.anniversary-card {
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+.anniversary-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.anniversary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+.anniversary-name {
+    font-weight: normal;
+    color: #666;
+}
+
+.anniversary-body {
+    padding: 15px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.anniversary-date {
+    color: #888;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+    border: 1px solid #f9e6e6;
+}
+
+.modal-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 1.4em;
+    color: #555;
+    font-weight: normal;
+    font-family: 'Noto Serif', serif;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal-body {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #f9e6e6;
+    border-radius: 15px;
+    font-size: 1em;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-actions .btn {
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background-color: #f9e6e6;
+    color: #666;
+}
+
+.btn-primary:hover {
+    background-color: #f7d7d7;
+}
+
+.btn-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.btn-danger:hover {
+    background-color: #f5c6cb;
+}
+
+/* 装饰元素已移除 */
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+    
+    .container {
+        padding: 10px;
+        border-radius: 20px;
+    }
+    
+    .nav {
+        padding: 8px 0;
+    }
+    
+    .nav-item {
+        font-size: 20px;
+        padding: 5px 8px;
+    }
+    
+    .home-header {
+        height: 160px;
+    }
+    
+    .avatar-frame {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .avatar-frame.left {
+        left: calc(50% - 100px);
+    }
+    
+    .avatar-frame.right {
+        right: calc(50% - 100px);
+    }
+    
+    .profile-container {
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .profile {
+        padding: 12px;
+        margin-bottom: 0;
+        width: 50%;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.85em;
+    }
+    
+    .chapter-header {
+        padding: 8px 12px;
+    }
+    
+    .chapter-content {
+        padding: 12px;
+    }
+    
+    .modal-content {
+        padding: 12px;
+        width: 90%;
+    }
+    
+    .form-group input, .form-group textarea, .form-group select {
+        padding: 8px;
+    }
+    
+    .notebook-list::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .notebook-list::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+    
+    .notebook-item, .notebook-add {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    
+    .anniversary-body {
+        font-size: 1em;
+        padding: 12px;
+    }
+}
+
+/* 针对更小屏幕的优化 */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 8px;
+    }
+    
+    .nav-item {
+        font-size: 18px;
+        padding: 4px 6px;
+    }
+    
+    .avatar-frame {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .avatar-frame.left {
+        left: calc(50% - 85px);
+    }
+    
+    .avatar-frame.right {
+        right: calc(50% - 85px);
+    }
+    
+    .profile-container {
+        flex-direction: row;
+    }
+    
+    .profile {
+        width: 50%;
+    }
+    
+    .btn-icon {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 10px;
+    }
+    
+    .modal-title {
+        font-size: 1.1em;
+    }
+    
+    .form-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+
+/* 触摸优化 */
+@media (hover: none) {
+    .btn, .nav-item, .notebook-item, .anniversary-item, .btn-icon, .day-cell, .music-control-btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn:active, .nav-item:active, .notebook-item:active, .anniversary-item:active, .day-cell:active, .music-control-btn:active {
+        opacity: 0.7;
+    }
+}
+
+/* 雪花动画 */
+.snowflake {
+    position: absolute;
+    color: #fff;
+    font-size: 1em;
+    opacity: 0.8;
+    z-index: -1;
+    pointer-events: none;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+/* 安全区域适配 */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .container {
+        padding-bottom: calc(15px + env(safe-area-inset-bottom));
+    }
+    
+    .nav {
+        padding-top: calc(10px + env(safe-area-inset-top));
+    }
+}
+
+/* 一起听页面样式 */
+.listen-container {
+    margin-bottom: 20px;
+}
+
+.listen-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+.listen-time {
+    font-size: 1.2em;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* 播放状态动画 */
+@keyframes spin { 
+    from { transform: rotate(0deg); } 
+    to { transform: rotate(360deg); } 
+}
+
+.rotating {
+    animation: spin 4s linear infinite;
+}
+
+.paused {
+    animation-play-state: paused;
+}
+
+.listen-avatars {
+    margin-bottom: 20px;
+    height: 120px;
+    position: relative;
+}
+
+
+.listen-avatars .avatar-container {
+    height: 100%;
+}
+
+.listen-avatars .avatar-frame {
+    width: 90px;
+    height: 90px;
+}
+
+.listen-avatars .avatar-frame.left {
+    left: calc(50% - 130px);
+}
+
+.listen-avatars .avatar-frame.right {
+    right: calc(50% - 130px);
+}
+
+.music-cover-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.music-cover {
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background-color: #f9e6e6;
+}
+
+.music-cover-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #999;
+    font-size: 60px;
+}
+
+#music-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.music-info {
+    margin-top: 15px;
+}
+
+#music-title {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+#music-artist {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.music-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+}
+
+.music-control-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f9e6e6;
+    border: none;
+    margin: 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.music-control-btn:hover {
+    transform: scale(1.1);
+    background-color: #f7d7d7;
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+}
+
+.control-icon {
+    font-size: 1.5em;
+    color: #666;
+}
+
+.music-upload {
+    margin: 0 5px;
+}
+
+.music-actions {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 20px;
+}
+
+.music-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 8px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    white-space: nowrap;
+    font-size: 0.9em;
+}
+
+.music-upload-label:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.upload-icon {
+    margin-right: 5px;
+    font-size: 1.2em;
+}
+
+#upload-music {
+    display: none;
+}
+
+.playlist-container {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.playlist-title {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: normal;
+}
+
+.playlist {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.playlist-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playlist-item:last-child {
+    border-bottom: none;
+}
+
+.playlist-item:hover {
+    background-color: rgba(249, 230, 230, 0.5);
+}
+
+.playlist-item.active {
+    background-color: rgba(249, 230, 230, 0.8);
+}
+
+.playlist-item-info {
+    flex: 1;
+}
+
+.playlist-item-title {
+    font-size: 0.75em;
+    color: #555;
+    margin-bottom: 3px;
+}
+
+.playlist-item-artist {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.playlist-item-duration {
+    font-size: 0.8em;
+    color: #999;
+}
+
+.playlist-empty {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+
+/* 信件页面样式 */
+.letter-container {
+    margin-bottom: 20px;
+}
+
+.calendar-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#current-month-display {
+    font-size: 1.2em;
+    color: #666;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: all 0.3s;
+}
+
+#current-month-display:hover {
+    background-color: #f9e6e6;
+}
+
+.days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #888;
+    font-size: 0.9em;
+}
+
+.day-name {
+    padding: 5px 0;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+}
+
+.calendar-day {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    color: #666;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #f9f9f9;
+}
+
+.calendar-day.has-letter {
+    background-color: #f9e6e6;
+    color: #555;
+}
+
+.calendar-day.has-letter:hover {
+    background-color: #f7d7d7;
+}
+
+.calendar-day.today {
+    font-weight: bold;
+    box-shadow: inset 0 0 0 2px #f9e6e6;
+}
+
+.calendar-day.selected {
+    background-color: #e6e6f9;
+    color: #555;
+}
+
+.calendar-day.prev-month,
+.calendar-day.next-month {
+    color: #ccc;
+}
+
+.calendar-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.letter-preview {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    min-height: 200px;
+}
+
+#letter-date-display {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 1.1em;
+}
+
+#letter-title-display {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #555;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+#letter-content-preview {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 150px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    color: #555;
+}
+
+.letter-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.letter-empty {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+
+#letter-date-display-modal {
+    background-color: #f9e6e6;
+    padding: 8px 15px;
+    border-radius: 15px;
+    text-align: center;
+    color: #666;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .months-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .music-cover {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .music-control-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .play-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .control-icon {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .months-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .music-controls {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .music-upload {
+        margin-left: 10px;
+        margin-top: 0;
+    }
+}
+
+/* 颜色选择器样式 */
+.color-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.active {
+    border-color: #666;
+}
+
+.notebook-description {
+    color: #888;
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    padding: 0 5px;
+}
+
+/* 音乐进度条样式 */
+.music-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.progress-time {
+    font-size: 0.9em;
+    color: #666;
+    min-width: 40px;
+    text-align: center;
+}
+
+.progress-bar-container {
+    flex: 1;
+    margin: 0 15px;
+    height: 6px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #f9e6e6;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #f9e6e6;
+    border-radius: 50%;
+    left: 0%;
+    cursor: pointer;
+    transition: left 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progress-handle:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 装饰元素已移除 -->
+        
+        <!-- 导航栏 -->
+        <div class="nav">
+            <div class="nav-item active" data-page="home">&#9825;</div>
+            <div class="nav-item" data-page="story">&#9998;</div>
+            <div class="nav-item" data-page="if">&#8801;</div>
+            <div class="nav-item" data-page="anniversary">&#9674;</div>
+            <div class="nav-item" data-page="listen">&#9834;</div>
+            <div class="nav-item" data-page="letter">&#9993;</div>
+        </div>
+        
+        <!-- 首页 -->
+        <div class="page active" id="home">
+            <div class="home-header">
+                <div class="avatar-container">
+                    <div class="avatar-frame left">
+                        <div class="avatar-placeholder">+</div>
+                        <img class="avatar-img" id="avatar-left" style="display: none;">
+                        <input type="file" class="avatar-upload" id="upload-left" accept="image/*">
+                    </div>
+                    <div class="avatar-frame right">
+                        <div class="avatar-placeholder">+</div>
+                        <img class="avatar-img" id="avatar-right" style="display: none;">
+                        <input type="file" class="avatar-upload" id="upload-right" accept="image/*">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="real-time" id="real-time-display"></div>
+            
+            <div class="mood-text">
+                <div class="mood-line" contenteditable="true">°•✘ Grey mood ✘•°•✧</div>
+                <div class="mood-line" contenteditable="true">灰色心情</div>
+                <div class="mood-line" contenteditable="true">• ·✧· Heartbroken old photos.·✧· 心碎旧相片</div>
+                <div class="mood-line" contenteditable="true">···°。✘ Unspeakable Memories ✘。°···</div>
+                <div class="mood-line" contenteditable="true">+⊹.抱擁 は 私の 鎮静 剤+⊹`</div>
+                <div class="mood-line" contenteditable="true">*⋆ㄚ⋆あなたの 別れ は 暴雨 をもたらした.ㄚ⋆+</div>
+            </div>
+            
+            <div class="profile-container">
+                <div class="profile">
+                    <div class="profile-field">
+                        <label>名字</label>
+                        <input type="text" id="my-name" placeholder="输入你的名字">
+                    </div>
+                    <div class="profile-field">
+                        <label>年龄</label>
+                        <input type="number" id="my-age" placeholder="输入你的年龄">
+                    </div>
+                    <div class="profile-field">
+                        <label>个性</label>
+                        <textarea id="my-personality" placeholder="描述你的个性特点"></textarea>
+                    </div>
+                    <div class="profile-field">
+                        <label>爱好</label>
+                        <textarea id="my-hobbies" placeholder="描述你的爱好"></textarea>
+                    </div>
+                </div>
+                
+                <div class="profile">
+                    <div class="profile-field">
+                        <label>名字</label>
+                        <input type="text" id="lover-name" placeholder="输入TA的名字">
+                    </div>
+                    <div class="profile-field">
+                        <label>年龄</label>
+                        <input type="number" id="lover-age" placeholder="输入TA的年龄">
+                    </div>
+                    <div class="profile-field">
+                        <label>个性</label>
+                        <textarea id="lover-personality" placeholder="描述TA的个性特点"></textarea>
+                    </div>
+                    <div class="profile-field">
+                        <label>爱好</label>
+                        <textarea id="lover-hobbies" placeholder="描述TA的爱好"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="anniversary-preview">
+                <div id="home-anniversary-list">
+                    <!-- 纪念日预览将在这里动态生成 -->
+                    <div class="anniversary-item">纪念日</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 故事页面 -->
+        <div class="page" id="story">
+            <div class="story-container">
+                <div class="story-header">
+                    <h2 class="story-title">故事</h2>
+                    <button class="btn btn-add" id="add-chapter">添加章节</button>
+                </div>
+                
+                <div id="story-chapters">
+                    <!-- 故事章节将在这里动态生成 -->
+                    <div class="story-empty">还没有故事</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- IF线页面 -->
+        <div class="page" id="if">
+            <div class="if-container">
+                <div class="story-header">
+                    <h2 class="story-title">IF</h2>
+                </div>
+                
+                <div class="notebook-list" id="notebook-list">
+                    <!-- 日记本列表将在这里动态生成 -->
+                    <div class="notebook-add" id="add-notebook">+ 新建世界</div>
+                </div>
+                
+                <div class="if-chapters" id="if-chapters">
+                    <!-- IF线章节将在这里动态生成 -->
+                    <div class="if-empty">请先创建或选择一个世界</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 纪念日页面 -->
+        <div class="page" id="anniversary">
+            <div class="anniversary-container">
+                <div class="story-header">
+                    <h2 class="story-title">纪念日</h2>
+                    <button class="btn btn-add" id="add-anniversary">添加纪念日</button>
+                </div>
+                
+                <div class="anniversary-list" id="anniversary-list">
+                    <!-- 纪念日列表将在这里动态生成 -->
+                    <div class="anniversary-empty">还没有纪念日</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 一起听页面 -->
+        <div class="page" id="listen">
+            <div class="listen-container">
+                <div class="listen-header">
+                    <div class="listen-time">一起听了 <span id="listen-hours">0</span> 小时 <span id="listen-minutes">0</span> 分钟</div>
+                </div>
+                
+                <div class="listen-avatars">
+                    <div class="avatar-container">
+                        <div class="avatar-frame left">
+                            <div class="avatar-placeholder">+</div>
+                            <img class="avatar-img" id="listen-avatar-left" style="display: none;">
+                        </div>
+                        <div class="avatar-frame right">
+                            <div class="avatar-placeholder">+</div>
+                            <img class="avatar-img" id="listen-avatar-right" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="music-cover-container">
+                    <div class="music-cover">
+                        <div class="music-cover-placeholder">
+                            <span class="music-icon">&#9834;</span>
+                        </div>
+                        <img id="music-cover-img" style="display: none;">
+                    </div>
+                <div class="music-info">
+                    <div id="music-title">未播放音乐</div>
+                    <div id="music-artist">-</div>
+                </div>
+                
+                <div class="music-progress">
+                    <div class="progress-time" id="current-time">0:00</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                            <div class="progress-handle" id="progress-handle"></div>
+                        </div>
+                    </div>
+                    <div class="progress-time" id="total-time">0:00</div>
+                </div>
+                </div>
+                
+                <div class="music-controls">
+                    <button class="music-control-btn" id="prev-track">
+                        <span class="control-icon">&#9198;</span>
+                    </button>
+                    <button class="music-control-btn play-btn" id="play-pause">
+                        <span class="control-icon">&#9654;</span>
+                    </button>
+                    <button class="music-control-btn" id="next-track">
+                        <span class="control-icon">&#9197;</span>
+                    </button>
+                    <button class="music-control-btn" id="play-mode" title="播放模式">
+                        <span class="control-icon" id="play-mode-icon">&#8635;</span>
+                    </button>
+                </div>
+                
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <div class="music-upload">
+                        <label for="upload-music" class="music-upload-label" style="background-color: #ffffff;">
+                            <span class="upload-text">上传音乐</span>
+                        </label>
+                        <input type="file" id="upload-music" accept="audio/mp3,audio/*" multiple>
+                    </div>
+                    <div class="music-upload">
+                        <label for="upload-cover" class="music-upload-label" style="background-color: #ffffff;">
+                            <span class="upload-text">上传封面</span>
+                        </label>
+                        <input type="file" id="upload-cover" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <!-- 移除了从URL添加音乐功能 -->
+                
+                <div class="playlist-container">
+                    <h3 class="playlist-title">播放列表</h3>
+                    <div id="playlist" class="playlist">
+                        <!-- 播放列表将在这里动态生成 -->
+                        <div class="playlist-empty">还没有音乐，点击"上传音乐"添加歌曲</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 信件页面 -->
+        <div class="page" id="letter">
+            <div class="letter-container">
+                <div class="story-header">
+                    <h2 class="story-title">时光信件</h2>
+                </div>
+                
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="btn" id="prev-month">◀</button>
+                        <div id="current-month-display">2025年1月</div>
+                        <button class="btn" id="next-month">▶</button>
+                    </div>
+                    
+                    <div class="days-header">
+                        <div class="day-name">日</div>
+                        <div class="day-name">一</div>
+                        <div class="day-name">二</div>
+                        <div class="day-name">三</div>
+                        <div class="day-name">四</div>
+                        <div class="day-name">五</div>
+                        <div class="day-name">六</div>
+                    </div>
+                    
+                    <div class="days-grid" id="calendar-days">
+                        <!-- 日历将在这里动态生成 -->
+                    </div>
+                    
+                    <div class="calendar-actions">
+                        <button class="btn btn-add" id="add-letter">添加信件</button>
+                    </div>
+                </div>
+                
+                <div class="letter-preview">
+                    <div id="letter-date-display">选择一个日期查看或添加信件</div>
+                    <div id="letter-title-display"></div>
+                    <div id="letter-content-preview">
+                        <!-- 信件内容预览将在这里动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模态框 -->
+        <!-- 添加章节模态框 -->
+        <div class="modal" id="chapter-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">添加章节</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>章节标题</label>
+                        <input type="text" id="chapter-title" placeholder="输入章节标题">
+                    </div>
+                    <div class="form-group">
+                        <label>章节内容</label>
+                        <textarea id="chapter-content" placeholder="输入章节内容"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="cancel-chapter">取消</button>
+                    <button class="btn btn-primary" id="save-chapter">保存</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加日记本模态框 -->
+        <div class="modal" id="notebook-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">新建世界</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>世界名称</label>
+                        <input type="text" id="notebook-name" placeholder="输入世界名称">
+                    </div>
+                    <div class="form-group">
+                        <label>选择颜色</label>
+                    <div class="color-picker">
+                            <div class="color-option" data-color="#d5c3c6" style="background-color: #d5c3c6;"></div>
+                            <div class="color-option" data-color="#b6c8a9" style="background-color: #b6c8a9;"></div>
+                            <div class="color-option" data-color="#c6c9d0" style="background-color: #c6c9d0;"></div>
+                            <div class="color-option" data-color="#e6d2c0" style="background-color: #e6d2c0;"></div>
+                            <div class="color-option" data-color="#b8d0cb" style="background-color: #b8d0cb;"></div>
+                            <div class="color-option" data-color="#d0c1cf" style="background-color: #d0c1cf;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="cancel-notebook">取消</button>
+                    <button class="btn btn-primary" id="save-notebook">保存</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加IF线章节模态框 -->
+        <div class="modal" id="if-chapter-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">添加章节</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>章节标题</label>
+                        <input type="text" id="if-chapter-title" placeholder="输入章节标题">
+                    </div>
+                    <div class="form-group">
+                        <label>章节内容</label>
+                        <textarea id="if-chapter-content" placeholder="输入章节内容"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="cancel-if-chapter">取消</button>
+                    <button class="btn btn-primary" id="save-if-chapter">保存</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加纪念日模态框 -->
+        <div class="modal" id="anniversary-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">添加纪念日</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>纪念日名称</label>
+                        <input type="text" id="anniversary-name" placeholder="输入纪念日名称">
+                    </div>
+                    <div class="form-group">
+                        <label>日期</label>
+                        <input type="date" id="anniversary-date">
+                    </div>
+                    <div class="form-group">
+                        <label>类型</label>
+                        <select id="anniversary-type">
+                            <option value="countdown">倒计时（距离xx还有xx天）</option>
+                            <option value="countup">正计时（xx已经xx天）</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="cancel-anniversary">取消</button>
+                    <button class="btn btn-primary" id="save-anniversary">保存</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加信件模态框 -->
+        <div class="modal" id="letter-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">写给未来的信</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>日期</label>
+                        <div id="letter-date-display-modal"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>信件标题</label>
+                        <input type="text" id="letter-title" placeholder="输入信件标题">
+                    </div>
+                    <div class="form-group">
+                        <label>信件内容</label>
+                        <textarea id="letter-content" placeholder="写下你想对未来说的话..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="letter-recurring">
+                            每年循环发送（每年这个日期都会收到这封信）
+                        </label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="cancel-letter">取消</button>
+                    <button class="btn btn-primary" id="save-letter">保存</button>
+                    <button class="btn btn-danger" id="delete-letter" style="display: none;">删除</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 音乐播放器（隐藏） -->
+        <audio id="audio-player" preload="auto"></audio>
+    </div>
+    
+    <script>
+        // 数据存储对象
+const dreamData = {
+    profiles: {
+        my: {
+            name: '',
+            age: '',
+            personality: '',
+            hobbies: '',
+            avatar: ''
+        },
+        lover: {
+            name: '',
+            age: '',
+            personality: '',
+            hobbies: '',
+            avatar: ''
+        }
+    },
+    story: [],
+    notebooks: [],
+    anniversaries: [],
+    music: {
+        playlist: [],
+        currentIndex: -1,
+        totalListenTime: 0, // 以秒为单位
+        lastStartTime: null,
+        playMode: 'order' // 播放模式：order(顺序播放), random(随机播放), single(单曲循环)
+    },
+    letters: {}, // 格式: { "YYYY-MM-DD": [{ id: "唯一ID", title: "信件标题", content: "信件内容", created: "创建日期", recurring: true/false }, ...] }
+    decorativeTexts: [] // 存储首页装饰文字
+};
+
+// 当前选中的日记本ID
+let currentNotebookId = null;
+
+// 当前选中的日期
+let selectedDate = null;
+
+// 当前正在编辑的章节ID
+let currentEditingChapterId = null;
+
+// 音乐播放器
+let audioPlayer = null;
+let listenTimeInterval = null;
+let progressUpdateInterval = null;
+
+// IndexedDB 相关
+let musicDB = null;
+const DB_NAME = 'DreamLoverMusicDB';
+const DB_VERSION = 1;
+const MUSIC_STORE = 'musicFiles';
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', init);
+
+// 初始化函数
+async function init() {
+    // 初始化IndexedDB
+    await initMusicDB();
+    
+    // 从本地存储加载数据
+    loadData();
+    
+    // 迁移音乐数据到IndexedDB
+    await migrateMusicToIndexedDB();
+    
+    // 初始化导航
+    initNavigation();
+    
+    // 初始化各页面
+    initHomePage();
+    initStoryPage();
+    initIfPage();
+    initAnniversaryPage();
+    initListenPage();
+    initLetterPage();
+    
+    // 初始化模态框
+    initModals();
+    
+    // 初始化雪花效果
+    initSnowflakes();
+    
+    // 初始化实时时间显示
+    initRealTimeDisplay();
+}
+
+// 初始化实时时间显示
+function initRealTimeDisplay() {
+    const timeDisplay = document.getElementById('real-time-display');
+    
+// 更新时间显示
+    function updateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        
+        timeDisplay.textContent = `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+    }
+    
+    // 立即更新一次
+    updateTime();
+    
+    // 每秒更新一次
+    setInterval(updateTime, 1000);
+}
+
+// 初始化雪花效果
+function initSnowflakes() {
+    const container = document.querySelector('.container');
+    const snowflakeCount = 30; // 雪花数量
+    const snowflakeChars = ['❄', '❅', '❆', '✧', '✦']; // 雪花字符
+    
+    // 创建雪花
+    for (let i = 0; i < snowflakeCount; i++) {
+        createSnowflake(container, snowflakeChars);
+    }
+}
+
+// 创建单个雪花
+function createSnowflake(container, chars) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    
+    // 随机选择雪花字符
+    const charIndex = Math.floor(Math.random() * chars.length);
+    snowflake.textContent = chars[charIndex];
+    
+    // 随机位置
+    const startPositionX = Math.random() * 100; // 0-100%
+    
+    // 随机大小
+    const size = Math.random() * 0.8 + 0.5; // 0.5-1.3em
+    
+    // 随机透明度
+    const opacity = Math.random() * 0.6 + 0.2; // 0.2-0.8
+    
+    // 随机动画持续时间
+    const animationDuration = Math.random() * 15 + 10; // 10-25s
+    
+    // 随机动画延迟
+    const animationDelay = Math.random() * 10; // 0-10s
+    
+    // 设置样式
+    snowflake.style.left = `${startPositionX}%`;
+    snowflake.style.fontSize = `${size}em`;
+    snowflake.style.opacity = opacity;
+    snowflake.style.animationDuration = `${animationDuration}s`;
+    snowflake.style.animationDelay = `${animationDelay}s`;
+    
+    // 添加到容器
+    container.appendChild(snowflake);
+    
+    // 动画结束后重新创建
+    snowflake.addEventListener('animationend', () => {
+        snowflake.remove();
+        createSnowflake(container, chars);
+    });
+}
+
+// 从本地存储加载数据
+function loadData() {
+    const savedData = localStorage.getItem('dreamLoverData');
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        Object.assign(dreamData, parsedData);
+        
+        // 迁移旧的信件数据格式
+        migrateLettersData();
+        
+        // 加载头像
+        if (dreamData.profiles.my.avatar) {
+            document.getElementById('avatar-left').src = dreamData.profiles.my.avatar;
+            document.getElementById('avatar-left').style.display = 'block';
+            document.querySelector('.avatar-frame.left .avatar-placeholder').style.display = 'none';
+        }
+        
+        if (dreamData.profiles.lover.avatar) {
+            document.getElementById('avatar-right').src = dreamData.profiles.lover.avatar;
+            document.getElementById('avatar-right').style.display = 'block';
+            document.querySelector('.avatar-frame.right .avatar-placeholder').style.display = 'none';
+        }
+        
+        // 加载装饰文字
+        loadDecorativeTexts();
+    }
+    
+    // 加载个人信息
+    document.getElementById('my-name').value = dreamData.profiles.my.name || '';
+    document.getElementById('my-age').value = dreamData.profiles.my.age || '';
+    document.getElementById('my-personality').value = dreamData.profiles.my.personality || '';
+    document.getElementById('my-hobbies').value = dreamData.profiles.my.hobbies || '';
+    
+    document.getElementById('lover-name').value = dreamData.profiles.lover.name || '';
+    document.getElementById('lover-age').value = dreamData.profiles.lover.age || '';
+    document.getElementById('lover-personality').value = dreamData.profiles.lover.personality || '';
+    document.getElementById('lover-hobbies').value = dreamData.profiles.lover.hobbies || '';
+    
+    // 更新首页纪念日预览
+    updateAnniversaryPreview();
+}
+
+// 保存数据到本地存储
+function saveData() {
+    // 检查数据大小，如果太大则进行压缩
+    const dataString = JSON.stringify(dreamData);
+    
+    // 如果数据太大，尝试压缩音乐数据
+    if (dataString.length > 4000000 && dreamData.music.playlist.length > 0) { // 约4MB
+        console.log('数据过大，尝试压缩...');
+        compressAudioData();
+        return; // 压缩后会重新调用saveData
+    }
+    
+    try {
+        localStorage.setItem('dreamLoverData', dataString);
+        return true; // 保存成功
+    } catch (error) {
+        // 处理存储配额超出错误
+        if (error.name === 'QuotaExceededError') {
+            console.error('存储空间已满:', error);
+            
+            // 只在真正上传音乐时显示警告
+            if (window.currentlyUploadingMusic === true) {
+                // 移除最后添加的音乐并显示警告
+                if (dreamData.music.playlist.length > 0) {
+                    dreamData.music.playlist.pop();
+                    alert('存储空间已满，已自动移除最近添加的音乐文件以释放空间。');
+                    
+                    // 重新尝试保存
+                    try {
+                        localStorage.setItem('dreamLoverData', JSON.stringify(dreamData));
+                        renderPlaylist(); // 更新播放列表显示
+                        return true;
+                    } catch (e) {
+                        console.error('即使移除了音乐文件，仍然无法保存数据:', e);
+                    }
+                } else {
+                    alert('存储空间已满，请删除一些数据后再试。');
+                }
+            } else {
+                // 静默处理：尝试通过移除一些不必要的数据来释放空间
+                if (dreamData.music.playlist.length > 0) {
+                    dreamData.music.playlist.pop();
+                    try {
+                        localStorage.setItem('dreamLoverData', JSON.stringify(dreamData));
+                        console.log('已自动移除一首音乐以释放空间');
+                        renderPlaylist(); // 更新播放列表显示
+                        return true;
+                    } catch (e) {
+                        console.error('无法自动释放存储空间:', e);
+                    }
+                }
+            }
+        } else {
+            console.error('保存数据时出错:', error);
+        }
+        return false; // 保存失败
+    }
+}
+
+// 压缩音频数据
+function compressAudioData() {
+    console.log('压缩音频数据...');
+    // 如果没有音乐，直接返回
+    if (dreamData.music.playlist.length === 0) {
+        return;
+    }
+    
+    // 标记当前正在上传的音乐，避免移除它
+    const currentUploadId = window.currentUploadMusicId;
+    
+    // 尝试找到可以移除或压缩的音乐
+    // 1. 首先尝试移除非当前上传且非URL类型的最旧音乐
+    let oldestIndex = -1;
+    let oldestDate = new Date();
+    
+    for (let i = 0; i < dreamData.music.playlist.length; i++) {
+        const item = dreamData.music.playlist[i];
+        // 跳过当前正在上传的音乐和URL类型的音乐
+        if (currentUploadId && item.id === currentUploadId) continue;
+        if (item.isURL) continue;
+        
+        const itemDate = new Date(item.addedDate);
+        if (itemDate < oldestDate) {
+            oldestDate = itemDate;
+            oldestIndex = i;
+        }
+    }
+    
+    if (oldestIndex !== -1) {
+        // 找到了可以移除的音乐
+        const removedItem = dreamData.music.playlist.splice(oldestIndex, 1)[0];
+        console.log(`已移除较旧的音乐 "${removedItem.name}" 以减小数据大小`);
+        
+        // 如果移除的是当前播放的音乐或之前的音乐，需要调整当前索引
+        if (oldestIndex === dreamData.music.currentIndex) {
+            // 如果移除的是当前播放的音乐，停止播放
+            if (audioPlayer) {
+                audioPlayer.pause();
+                clearInterval(listenTimeInterval);
+            }
+            dreamData.music.currentIndex = -1;
+        } else if (oldestIndex < dreamData.music.currentIndex) {
+            dreamData.music.currentIndex--;
+        }
+    } else {
+        // 如果没有找到可以移除的旧音乐，移除最后添加的非当前上传的音乐
+        for (let i = dreamData.music.playlist.length - 1; i >= 0; i--) {
+            const item = dreamData.music.playlist[i];
+            if (currentUploadId && item.id === currentUploadId) continue;
+            
+            dreamData.music.playlist.splice(i, 1);
+            console.log(`已移除最近添加的音乐以减小数据大小`);
+            
+            // 调整当前索引
+            if (i === dreamData.music.currentIndex) {
+                if (audioPlayer) {
+                    audioPlayer.pause();
+                    clearInterval(listenTimeInterval);
+                }
+                dreamData.music.currentIndex = -1;
+            } else if (i < dreamData.music.currentIndex) {
+                dreamData.music.currentIndex--;
+            }
+            
+            break;
+        }
+    }
+    
+    // 重新尝试保存
+    setTimeout(() => {
+        saveData();
+    }, 0);
+}
+
+// 初始化导航
+function initNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // 移除所有活动状态
+            navItems.forEach(i => i.classList.remove('active'));
+            // 添加当前活动状态
+            item.classList.add('active');
+            
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示对应页面
+            const pageId = item.getAttribute('data-page');
+            document.getElementById(pageId).classList.add('active');
+            
+            // 如果切换到一起听页面，同步头像
+            if (pageId === 'listen') {
+                syncListenAvatars();
+            }
+        });
+    });
+}
+
+// 初始化首页
+function initHomePage() {
+    // 头像上传
+    document.getElementById('upload-left').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imgSrc = event.target.result;
+                document.getElementById('avatar-left').src = imgSrc;
+                document.getElementById('avatar-left').style.display = 'block';
+                document.querySelector('.avatar-frame.left .avatar-placeholder').style.display = 'none';
+                dreamData.profiles.my.avatar = imgSrc;
+                saveData();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    document.getElementById('upload-right').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imgSrc = event.target.result;
+                document.getElementById('avatar-right').src = imgSrc;
+                document.getElementById('avatar-right').style.display = 'block';
+                document.querySelector('.avatar-frame.right .avatar-placeholder').style.display = 'none';
+                dreamData.profiles.lover.avatar = imgSrc;
+                saveData();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // 个人信息输入
+    const profileInputs = [
+        { id: 'my-name', path: 'profiles.my.name' },
+        { id: 'my-age', path: 'profiles.my.age' },
+        { id: 'my-personality', path: 'profiles.my.personality' },
+        { id: 'my-hobbies', path: 'profiles.my.hobbies' },
+        { id: 'lover-name', path: 'profiles.lover.name' },
+        { id: 'lover-age', path: 'profiles.lover.age' },
+        { id: 'lover-personality', path: 'profiles.lover.personality' },
+        { id: 'lover-hobbies', path: 'profiles.lover.hobbies' }
+    ];
+    
+    profileInputs.forEach(input => {
+        document.getElementById(input.id).addEventListener('input', function(e) {
+            // 使用路径设置嵌套对象的属性
+            const pathParts = input.path.split('.');
+            let obj = dreamData;
+            for (let i = 0; i < pathParts.length - 1; i++) {
+                obj = obj[pathParts[i]];
+            }
+            obj[pathParts[pathParts.length - 1]] = e.target.value;
+            saveData();
+        });
+    });
+    
+    // 装饰文字输入
+    initDecorativeTexts();
+}
+
+// 更新首页纪念日预览
+function updateAnniversaryPreview() {
+    const container = document.getElementById('home-anniversary-list');
+    container.innerHTML = '';
+    
+    if (dreamData.anniversaries.length === 0) {
+        container.innerHTML = '<div class="anniversary-item">我们的纪念日</div>';
+        return;
+    }
+    
+    // 显示第一个纪念日（默认选中）
+    displaySelectedAnniversary(0);
+    
+    // 添加点击事件，点击纪念日可以切换
+    container.addEventListener('click', function() {
+        // 获取当前显示的纪念日索引
+        const currentIndex = container.dataset.currentIndex ? parseInt(container.dataset.currentIndex) : 0;
+        // 计算下一个要显示的纪念日索引
+        const nextIndex = (currentIndex + 1) % dreamData.anniversaries.length;
+        // 显示下一个纪念日
+        displaySelectedAnniversary(nextIndex);
+    });
+}
+
+// 显示选中的纪念日
+function displaySelectedAnniversary(index) {
+    const container = document.getElementById('home-anniversary-list');
+    container.innerHTML = '';
+    
+    if (index < 0 || index >= dreamData.anniversaries.length) {
+        return;
+    }
+    
+    // 保存当前显示的纪念日索引
+    container.dataset.currentIndex = index;
+    
+    const item = dreamData.anniversaries[index];
+    const div = document.createElement('div');
+    div.className = 'anniversary-item';
+    
+    // 计算天数
+    const today = new Date();
+    const targetDate = new Date(item.date);
+    const timeDiff = targetDate - today;
+    const dayDiff = Math.ceil(Math.abs(timeDiff) / (1000 * 60 * 60 * 24));
+    
+    // 显示纪念日名称和天数
+    if (item.type === 'countdown') {
+        if (timeDiff > 0) {
+            div.textContent = `距离${item.name}还有 ${dayDiff} 天`;
+        } else {
+            div.textContent = `${item.name}已经过去 ${dayDiff} 天`;
+        }
+    } else {
+        div.textContent = `${item.name}已经 ${dayDiff} 天`;
+    }
+    
+    container.appendChild(div);
+}
+
+// 初始化故事页面
+function initStoryPage() {
+// 添加章节按钮
+    document.getElementById('add-chapter').addEventListener('click', function() {
+        // 设置模态框标题为"添加章节"
+        document.querySelector('#chapter-modal .modal-title').textContent = '添加章节';
+        openModal('chapter-modal');
+    });
+    
+    // 保存章节按钮
+    document.getElementById('save-chapter').addEventListener('click', function() {
+        const title = document.getElementById('chapter-title').value.trim();
+        const content = document.getElementById('chapter-content').value.trim();
+        
+        if (currentEditingChapterId) {
+            // 编辑模式：更新现有章节
+            const index = dreamData.story.findIndex(item => item.id === currentEditingChapterId);
+            if (index !== -1) {
+                // 如果用户没有输入新标题，保留原标题；如果输入了新标题，则使用新标题
+                if (title) {
+                    dreamData.story[index].title = title;
+                }
+                // 更新内容
+                dreamData.story[index].content = content;
+            }
+        } else {
+            // 新建模式：添加新章节
+            // 如果标题为空，自动使用"无标题章节"
+            const finalTitle = title || "无标题章节";
+            
+            const chapter = {
+                id: Date.now().toString(),
+                title: finalTitle,
+                content: content,
+                date: new Date().toISOString()
+            };
+            
+            dreamData.story.push(chapter);
+        }
+        
+        saveData();
+        renderStoryChapters();
+        closeModal('chapter-modal');
+        
+        // 清空输入
+        document.getElementById('chapter-title').value = '';
+        document.getElementById('chapter-content').value = '';
+        
+        // 重置编辑状态
+        currentEditingChapterId = null;
+    });
+    
+    // 取消按钮
+    document.getElementById('cancel-chapter').addEventListener('click', function() {
+        closeModal('chapter-modal');
+    });
+    
+    // 渲染故事章节
+    renderStoryChapters();
+}
+
+// 渲染故事章节
+function renderStoryChapters() {
+    const container = document.getElementById('story-chapters');
+    container.innerHTML = '';
+    
+    if (dreamData.story.length === 0) {
+        container.innerHTML = '<div class="story-empty">还没有故事，点击"添加章节"开始记录吧！</div>';
+        return;
+    }
+    
+    dreamData.story.forEach(chapter => {
+        const chapterElement = createChapterElement(chapter, 'story');
+        container.appendChild(chapterElement);
+    });
+}
+
+// 创建章节元素
+function createChapterElement(chapter, type) {
+    const div = document.createElement('div');
+    div.className = 'story-chapter';
+    div.dataset.id = chapter.id;
+    
+    const header = document.createElement('div');
+    header.className = 'chapter-header';
+    
+    const title = document.createElement('h3');
+    title.className = 'chapter-title';
+    title.textContent = chapter.title;
+    
+    const actions = document.createElement('div');
+    actions.className = 'chapter-actions';
+    
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-icon';
+    editBtn.innerHTML = '✎';
+    editBtn.title = '编辑';
+    editBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // 阻止事件冒泡，避免触发章节点击
+        editChapter(chapter, type);
+    });
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-icon';
+    deleteBtn.innerHTML = '×';
+    deleteBtn.title = '删除';
+    deleteBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // 阻止事件冒泡，避免触发章节点击
+        deleteChapter(chapter.id, type);
+    });
+    
+    actions.appendChild(editBtn);
+    actions.appendChild(deleteBtn);
+    
+    header.appendChild(title);
+    header.appendChild(actions);
+    
+    const content = document.createElement('div');
+    content.className = 'chapter-content';
+    
+    // 只显示第一行内容
+    const firstLine = chapter.content.split('\n')[0];
+    content.textContent = firstLine;
+    
+    // 添加点击事件，点击章节进入阅读模式
+    div.addEventListener('click', function() {
+        showReadMode(chapter, type);
+    });
+    
+    div.appendChild(header);
+    div.appendChild(content);
+    
+    return div;
+}
+
+// 显示阅读模式
+function showReadMode(chapter, type) {
+    // 创建阅读模式模态框
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    
+    const modalTitle = document.createElement('h3');
+    modalTitle.className = 'modal-title';
+    modalTitle.textContent = chapter.title;
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    
+    modalHeader.appendChild(modalTitle);
+    modalHeader.appendChild(closeBtn);
+    
+    const modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    
+    // 添加滚动容器
+    const scrollContainer = document.createElement('div');
+    scrollContainer.style.maxHeight = '60vh'; // 设置最大高度
+    scrollContainer.style.overflowY = 'auto'; // 启用垂直滚动
+    scrollContainer.style.padding = '5px'; // 添加内边距
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.style.whiteSpace = 'pre-wrap';
+    contentDiv.style.lineHeight = '1.6';
+    contentDiv.textContent = chapter.content;
+    
+    scrollContainer.appendChild(contentDiv);
+    modalBody.appendChild(scrollContainer);
+    
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modal.appendChild(modalContent);
+    
+    // 点击模态框背景关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    document.body.appendChild(modal);
+}
+
+// 编辑章节
+function editChapter(chapter, type) {
+    if (type === 'story') {
+        // 修改模态框标题为"编辑章节"
+        document.querySelector('#chapter-modal .modal-title').textContent = '编辑章节';
+        
+        document.getElementById('chapter-title').value = chapter.title;
+        document.getElementById('chapter-content').value = chapter.content;
+        
+        // 设置当前正在编辑的章节ID
+        currentEditingChapterId = chapter.id;
+        
+        // 不再动态替换onclick处理程序，使用统一的处理程序
+        // 打开模态框，保存逻辑将由save-chapter按钮的事件监听器处理
+        openModal('chapter-modal');
+    } else if (type === 'if') {
+        document.getElementById('if-chapter-title').value = chapter.title;
+        document.getElementById('if-chapter-content').value = chapter.content;
+        
+        // 设置当前正在编辑的章节ID
+        currentEditingChapterId = chapter.id;
+        
+        // 不再动态替换onclick处理程序，使用统一的处理程序
+        // 打开模态框，保存逻辑将由save-if-chapter按钮的事件监听器处理
+        openModal('if-chapter-modal');
+    }
+}
+
+// 删除章节
+function deleteChapter(chapterId, type) {
+    if (!confirm('确定要删除这个章节吗？')) {
+        return;
+    }
+    
+    if (type === 'story') {
+        dreamData.story = dreamData.story.filter(item => item.id !== chapterId);
+        saveData();
+        renderStoryChapters();
+    } else if (type === 'if') {
+        const notebookIndex = dreamData.notebooks.findIndex(item => item.id === currentNotebookId);
+        if (notebookIndex !== -1) {
+            dreamData.notebooks[notebookIndex].chapters = dreamData.notebooks[notebookIndex].chapters.filter(item => item.id !== chapterId);
+            saveData();
+            openNotebookPage(currentNotebookId);
+        }
+    }
+}
+
+// 初始化IF线页面
+function initIfPage() {
+    // 添加日记本按钮
+    document.getElementById('add-notebook').addEventListener('click', function() {
+        openModal('notebook-modal');
+    });
+    
+    // 初始化颜色选择器
+    initColorPicker();
+    
+    // 保存日记本按钮
+    document.getElementById('save-notebook').addEventListener('click', function() {
+        const name = document.getElementById('notebook-name').value.trim();
+        const selectedColor = document.querySelector('.color-option.active');
+        
+        if (!name) {
+            alert('请输入世界名称');
+            return;
+        }
+        
+        // 默认颜色
+        let color = '#f9e6e6';
+        
+        // 如果有选中的颜色，使用选中的颜色
+        if (selectedColor) {
+            color = selectedColor.getAttribute('data-color');
+        }
+        
+        const notebook = {
+            id: Date.now().toString(),
+            name: name,
+            description: '',
+            color: color,
+            chapters: []
+        };
+        
+        dreamData.notebooks.push(notebook);
+        saveData();
+        renderNotebooks();
+        closeModal('notebook-modal');
+        
+        // 清空输入
+        document.getElementById('notebook-name').value = '';
+        document.getElementById('notebook-desc').value = '';
+        
+        // 选中新创建的日记本
+        selectNotebook(notebook.id);
+    });
+    
+    // 取消按钮
+    document.getElementById('cancel-notebook').addEventListener('click', function() {
+        closeModal('notebook-modal');
+    });
+    
+    // 保存IF线章节按钮
+    document.getElementById('save-if-chapter').addEventListener('click', function() {
+        const title = document.getElementById('if-chapter-title').value.trim();
+        const content = document.getElementById('if-chapter-content').value.trim();
+        
+        if (!currentNotebookId) {
+            alert('请先选择或创建一个世界');
+            return;
+        }
+        
+        const notebookIndex = dreamData.notebooks.findIndex(item => item.id === currentNotebookId);
+        if (notebookIndex !== -1) {
+            if (currentEditingChapterId) {
+                // 编辑模式：更新现有章节
+                const chapterIndex = dreamData.notebooks[notebookIndex].chapters.findIndex(item => item.id === currentEditingChapterId);
+                if (chapterIndex !== -1) {
+                    // 如果用户没有输入新标题，保留原标题；如果输入了新标题，则使用新标题
+                    if (title) {
+                        dreamData.notebooks[notebookIndex].chapters[chapterIndex].title = title;
+                    }
+                    // 更新内容
+                    dreamData.notebooks[notebookIndex].chapters[chapterIndex].content = content;
+                }
+            } else {
+                // 新建模式：添加新章节
+                // 如果标题为空，自动使用"无标题章节"
+                const finalTitle = title || "无标题章节";
+                
+                const chapter = {
+                    id: Date.now().toString(),
+                    title: finalTitle,
+                    content: content,
+                    date: new Date().toISOString()
+                };
+                
+                dreamData.notebooks[notebookIndex].chapters.push(chapter);
+            }
+            
+            saveData();
+            openNotebookPage(currentNotebookId);
+        }
+        
+        closeModal('if-chapter-modal');
+        
+        // 清空输入
+        document.getElementById('if-chapter-title').value = '';
+        document.getElementById('if-chapter-content').value = '';
+        
+        // 重置编辑状态
+        currentEditingChapterId = null;
+    });
+    
+    // 取消按钮
+    document.getElementById('cancel-if-chapter').addEventListener('click', function() {
+        closeModal('if-chapter-modal');
+    });
+    
+    // 渲染日记本列表
+    renderNotebooks();
+}
+
+// 初始化颜色选择器
+function initColorPicker() {
+    const colorOptions = document.querySelectorAll('.color-option');
+    
+    // 默认选中第一个颜色
+    if (colorOptions.length > 0) {
+        colorOptions[0].classList.add('active');
+    }
+    
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // 移除所有颜色的活动状态
+            colorOptions.forEach(opt => opt.classList.remove('active'));
+            // 添加当前颜色的活动状态
+            this.classList.add('active');
+        });
+    });
+}
+
+// 渲染日记本列表
+function renderNotebooks() {
+    const container = document.getElementById('notebook-list');
+    
+    // 保留添加按钮
+    const addButton = document.getElementById('add-notebook');
+    container.innerHTML = '';
+    container.appendChild(addButton);
+    
+    if (dreamData.notebooks.length === 0) {
+        return;
+    }
+    
+    dreamData.notebooks.forEach(notebook => {
+        const div = document.createElement('div');
+        div.className = 'notebook-item';
+        div.dataset.id = notebook.id;
+        
+        // 使用日记本的颜色，如果没有则使用默认颜色
+        const color = notebook.color || '#f9e6e6';
+        const darkerColor = getDarkerColor(color);
+        
+        // 设置日记本整体背景色
+        div.style.backgroundColor = color;
+        
+        // 创建日记本脊柱
+        const spine = document.createElement('div');
+        spine.className = 'notebook-spine';
+        spine.style.backgroundColor = darkerColor;
+        div.appendChild(spine);
+        
+        // 创建日记本封面
+        const cover = document.createElement('div');
+        cover.className = 'notebook-cover';
+        cover.textContent = notebook.name;
+        cover.style.backgroundColor = color;
+        div.appendChild(cover);
+        
+        // 创建删除按钮
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'notebook-delete';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.title = '删除世界';
+        deleteBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // 阻止事件冒泡，避免触发选中日记本
+            deleteNotebook(notebook.id);
+        });
+        div.appendChild(deleteBtn);
+        
+        div.addEventListener('click', function() {
+            selectNotebook(notebook.id);
+        });
+        
+        // 在添加按钮前插入
+        container.insertBefore(div, addButton);
+    });
+    
+    // 如果有日记本但没有选中的，选中第一个
+    if (dreamData.notebooks.length > 0 && !currentNotebookId) {
+        selectNotebook(dreamData.notebooks[0].id);
+    }
+}
+
+// 删除日记本
+function deleteNotebook(notebookId) {
+    if (!confirm('确定要删除这个世界吗？所有相关章节都将被删除。')) {
+        return;
+    }
+    
+    dreamData.notebooks = dreamData.notebooks.filter(item => item.id !== notebookId);
+    saveData();
+    
+    // 如果删除的是当前选中的日记本，清除当前选中状态
+    if (currentNotebookId === notebookId) {
+        currentNotebookId = null;
+        const container = document.getElementById('if-chapters');
+        container.innerHTML = '<div class="if-empty">请先创建或选择一个世界</div>';
+    }
+    
+    renderNotebooks();
+    
+    // 如果还有日记本，选中第一个
+    if (dreamData.notebooks.length > 0 && !currentNotebookId) {
+        selectNotebook(dreamData.notebooks[0].id);
+    }
+}
+
+// 选中日记本
+function selectNotebook(notebookId) {
+    currentNotebookId = notebookId;
+    
+    // 更新UI
+    document.querySelectorAll('.notebook-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.id === notebookId) {
+            item.classList.add('active');
+        }
+    });
+    
+    // 打开章节编辑页面
+    openNotebookPage(currentNotebookId);
+}
+
+// 打开日记本页面
+function openNotebookPage(notebookId) {
+    const notebook = dreamData.notebooks.find(item => item.id === notebookId);
+    if (!notebook) {
+        return;
+    }
+    
+    // 清空章节容器
+    const container = document.getElementById('if-chapters');
+    container.innerHTML = '';
+    
+    // 添加章节按钮
+    const header = document.createElement('div');
+    header.className = 'story-header';
+    
+    const title = document.createElement('h3');
+    title.className = 'story-title';
+    title.textContent = notebook.name;
+    
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-add';
+    addBtn.textContent = '添加章节';
+    addBtn.addEventListener('click', function() {
+        openModal('if-chapter-modal');
+    });
+    
+    header.appendChild(title);
+    header.appendChild(addBtn);
+    container.appendChild(header);
+    
+    // 日记本描述
+    if (notebook.description) {
+        const desc = document.createElement('div');
+        desc.className = 'notebook-description';
+        desc.textContent = notebook.description;
+        container.appendChild(desc);
+    }
+    
+    // 章节列表
+    if (notebook.chapters.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'if-empty';
+        empty.textContent = '这个世界还没有故事，点击"添加章节"开始记录吧！';
+        container.appendChild(empty);
+        return;
+    }
+    
+    notebook.chapters.forEach(chapter => {
+        const chapterElement = createChapterElement(chapter, 'if');
+        container.appendChild(chapterElement);
+    });
+}
+
+// 获取更深的颜色（用于日记本脊柱）
+function getDarkerColor(hexColor) {
+    // 移除#号
+    hexColor = hexColor.replace('#', '');
+    
+    // 解析RGB值
+    let r = parseInt(hexColor.substr(0, 2), 16);
+    let g = parseInt(hexColor.substr(2, 2), 16);
+    let b = parseInt(hexColor.substr(4, 2), 16);
+    
+    // 使颜色变暗（减少亮度）
+    r = Math.max(0, r - 40);
+    g = Math.max(0, g - 40);
+    b = Math.max(0, b - 40);
+    
+    // 转换回十六进制
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+// 初始化纪念日页面
+function initAnniversaryPage() {
+    // 添加纪念日按钮
+    document.getElementById('add-anniversary').addEventListener('click', function() {
+        openModal('anniversary-modal');
+    });
+    
+    // 保存纪念日按钮
+    document.getElementById('save-anniversary').addEventListener('click', function() {
+        const name = document.getElementById('anniversary-name').value.trim();
+        const date = document.getElementById('anniversary-date').value;
+        const type = document.getElementById('anniversary-type').value;
+        
+        if (!name) {
+            alert('请输入纪念日名称');
+            return;
+        }
+        
+        if (!date) {
+            alert('请选择日期');
+            return;
+        }
+        
+        const anniversary = {
+            id: Date.now().toString(),
+            name: name,
+            date: date,
+            type: type
+        };
+        
+        dreamData.anniversaries.push(anniversary);
+        saveData();
+        renderAnniversaries();
+        closeModal('anniversary-modal');
+        
+        // 清空输入
+        document.getElementById('anniversary-name').value = '';
+        document.getElementById('anniversary-date').value = '';
+        
+        // 更新首页纪念日预览
+        updateAnniversaryPreview();
+    });
+    
+    // 取消按钮
+    document.getElementById('cancel-anniversary').addEventListener('click', function() {
+        closeModal('anniversary-modal');
+    });
+    
+    // 渲染纪念日列表
+    renderAnniversaries();
+}
+
+// 渲染纪念日列表
+function renderAnniversaries() {
+    const container = document.getElementById('anniversary-list');
+    container.innerHTML = '';
+    
+    if (dreamData.anniversaries.length === 0) {
+        container.innerHTML = '<div class="anniversary-empty">还没有纪念日</div>';
+        return;
+    }
+    
+    dreamData.anniversaries.forEach(anniversary => {
+        const div = document.createElement('div');
+        div.className = 'anniversary-card';
+        div.dataset.id = anniversary.id;
+        
+        const header = document.createElement('div');
+        header.className = 'anniversary-header';
+        
+        const title = document.createElement('h3');
+        title.className = 'anniversary-title';
+        
+        // 计算天数
+        const today = new Date();
+        const dateObj = new Date(anniversary.date);
+        const timeDiff = dateObj - today;
+        const dayDiff = Math.ceil(Math.abs(timeDiff) / (1000 * 60 * 60 * 24));
+        
+        // 将纪念日名称融入到倒计时/正计时文本中
+        if (anniversary.type === 'countdown') {
+            if (timeDiff > 0) {
+                title.textContent = `距离${anniversary.name}还有 ${dayDiff} 天`;
+            } else {
+                title.textContent = `${anniversary.name}已经过去 ${dayDiff} 天`;
+            }
+        } else {
+            title.textContent = `${anniversary.name}已经 ${dayDiff} 天`;
+        }
+        
+        const actions = document.createElement('div');
+        actions.className = 'anniversary-actions';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-icon';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.title = '删除';
+        deleteBtn.addEventListener('click', function() {
+            deleteAnniversary(anniversary.id);
+        });
+        
+        actions.appendChild(deleteBtn);
+        
+        header.appendChild(title);
+        header.appendChild(actions);
+        
+        const content = document.createElement('div');
+        content.className = 'anniversary-content';
+        
+        // 格式化日期
+        const formattedDate = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+        
+        const dateElem = document.createElement('div');
+        dateElem.className = 'anniversary-date';
+        dateElem.textContent = formattedDate;
+        
+        content.appendChild(dateElem);
+        
+        div.appendChild(header);
+        div.appendChild(content);
+        
+        container.appendChild(div);
+    });
+}
+
+// 删除纪念日
+function deleteAnniversary(anniversaryId) {
+    if (!confirm('确定要删除这个纪念日吗？')) {
+        return;
+    }
+    
+    dreamData.anniversaries = dreamData.anniversaries.filter(item => item.id !== anniversaryId);
+    saveData();
+    renderAnniversaries();
+    
+    // 更新首页纪念日预览
+    updateAnniversaryPreview();
+}
+
+// 全局变量，用于标记音乐上传状态
+window.isAddingMusic = false;
+window.currentlyUploadingMusic = false;
+
+
+// 显示封面图片
+function displayCoverImage(imageData) {
+    if (!imageData) return;
+    
+    const coverImg = document.getElementById('music-cover-img');
+    const placeholder = document.querySelector('.music-cover-placeholder');
+    
+    if (coverImg && placeholder) {
+        coverImg.src = imageData;
+        coverImg.style.display = 'block';
+        placeholder.style.display = 'none';
+    }
+}
+
+// 初始化一起听页面
+function initListenPage() {
+    console.log('初始化音乐播放页面');
+    
+    // 打印播放列表信息
+    console.log(`播放列表中有 ${dreamData.music.playlist.length} 首歌曲`);
+    dreamData.music.playlist.forEach((item, index) => {
+        console.log(`歌曲 ${index+1}: ${item.name}, ID: ${item.id}, 类型: ${item.isURL ? 'URL' : (item.isIndexedDB ? 'IndexedDB' : 'Base64')}`);
+    });
+    
+// 上传音乐按钮
+    document.getElementById('upload-music').addEventListener('change', function(e) {
+        const files = e.target.files;
+        if (files.length === 0) return;
+        
+        // 重置标志
+        window.isAddingMusic = true;
+        window.currentlyUploadingMusic = true;
+        
+        // 创建一个计数器来跟踪处理完成的文件数
+        let processedFiles = 0;
+        const totalFiles = files.length;
+        
+        console.log(`开始处理 ${totalFiles} 个音频文件`);
+        
+        // 使用队列处理文件，避免同时处理多个大文件
+        processNextFile(Array.from(files), 0, processedFiles, totalFiles);
+    });
+    
+    
+    // 上传封面按钮
+    document.getElementById('upload-cover').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // 检查是否有正在播放的音乐
+        if (dreamData.music.currentIndex === -1) {
+            alert('请先选择一首音乐，再上传封面');
+            return;
+        }
+        
+        // 检查文件类型
+        if (!file.type.startsWith('image/')) {
+            alert('请上传图片文件');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const coverImageData = event.target.result;
+            
+            // 获取当前播放的音乐
+            const currentMusic = dreamData.music.playlist[dreamData.music.currentIndex];
+            
+            // 添加封面到音乐项
+            currentMusic.coverImage = coverImageData;
+            
+            // 保存数据
+            saveData();
+            
+            // 显示封面
+            displayCoverImage(coverImageData);
+            
+            // 显示成功消息
+            alert('封面上传成功！');
+        };
+        
+        reader.onerror = function() {
+            alert('读取图片文件失败，请重试');
+        };
+        
+        reader.readAsDataURL(file);
+    });
+    
+    // 同步头像
+    syncListenAvatars();
+    
+    // 渲染播放列表
+    renderPlaylist();
+    
+    // 初始化播放器控制
+    initPlayerControls();
+}
+
+// 队列处理音频文件
+function processNextFile(files, index, processedFiles, totalFiles) {
+    if (index >= files.length) {
+        console.log('所有文件处理完成');
+        window.isAddingMusic = false;
+        window.currentlyUploadingMusic = false;
+        return;
+    }
+    
+    const file = files[index];
+    
+    // 检查是否为音频文件
+    if (!file.type.startsWith('audio/')) {
+        alert(`文件 ${file.name} 不是音频文件，已跳过。`);
+        processNextFile(files, index + 1, processedFiles + 1, totalFiles);
+        return;
+    }
+    
+    console.log(`处理文件 ${index + 1}/${totalFiles}: ${file.name}`);
+    
+    // 使用更高效的方式处理音频
+    processAudioFile(file, function(success, duration) {
+        if (success) {
+            // 文件处理成功
+            console.log(`文件 ${file.name} 处理成功，时长: ${duration}秒`);
+        } else {
+            // 文件处理失败
+            console.error(`文件 ${file.name} 处理失败`);
+        }
+        
+        // 处理下一个文件
+        processNextFile(files, index + 1, processedFiles + 1, totalFiles);
+    });
+}
+
+// 处理单个音频文件
+function processAudioFile(file, callback) {
+    // 改进的文件类型检测
+    const fileName = file.name.toLowerCase();
+    const isMp3 = file.type === 'audio/mp3' || file.type === 'audio/mpeg' || fileName.endsWith('.mp3');
+    const isAudio = file.type.startsWith('audio/') || isMp3 || fileName.endsWith('.wav') || fileName.endsWith('.ogg') || fileName.endsWith('.m4a');
+    
+    // 检查文件类型
+    if (!isAudio) {
+        console.error(`文件 ${file.name} 不是音频文件`);
+        alert(`文件 ${file.name} 不是音频文件，请上传MP3或其他音频格式。`);
+        callback(false, 0);
+        return;
+    }
+    
+    // 检查文件大小
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > 10) { // 如果文件大于10MB
+        const confirmUpload = confirm(`文件 ${file.name} 较大 (${Math.round(fileSizeMB)}MB)，可能会导致存储问题。是否继续上传？`);
+        if (!confirmUpload) {
+            callback(false, 0);
+            return;
+        }
+    }
+    
+    // 特别处理MP3文件 - 使用已定义的isMp3变量
+    if (isMp3) {
+        console.log(`处理MP3文件: ${file.name}`);
+    }
+    
+    // 生成唯一ID并标记为当前上传的音乐
+    // 使用时间戳+随机字符串确保唯一性
+    window.currentUploadMusicId = Date.now().toString() + '-' + Math.random().toString(36).substring(2, 15);
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        const audioData = event.target.result;
+        
+        // 创建临时音频元素获取时长
+        const audio = new Audio();
+        let processed = false;
+        
+        // 设置超时处理，防止loadedmetadata事件长时间不触发
+        const metadataTimeout = setTimeout(() => {
+            if (processed) return;
+            processed = true;
+            
+            console.log(`音频元数据加载超时，使用默认时长: ${file.name}`);
+            // 使用默认时长，根据文件大小估算
+            // 假设平均比特率为128kbps，估算时长
+            const estimatedDuration = Math.max(180, Math.round(fileSizeMB * 8 / 0.128));
+            
+            // 添加到播放列表
+            addMusicToPlaylist(file.name, audioData, estimatedDuration, window.currentUploadMusicId);
+            
+            // 回调
+            callback(true, estimatedDuration);
+            
+            // 清除当前上传ID
+            window.currentUploadMusicId = null;
+        }, 5000); // 5秒超时，增加等待时间以处理较大文件
+        
+        // 使用更简单的方式获取音频时长
+        audio.preload = 'metadata'; // 只加载元数据
+        
+        audio.onloadedmetadata = async function() {
+            if (processed) return;
+            processed = true;
+            
+            clearTimeout(metadataTimeout); // 清除超时
+            const duration = audio.duration;
+            
+            // 添加到播放列表
+            await addMusicToPlaylist(file.name, audioData, duration, window.currentUploadMusicId);
+            
+            // 回调
+            callback(true, duration);
+            
+            // 清除当前上传ID
+            window.currentUploadMusicId = null;
+        };
+        
+        // 错误处理
+        audio.onerror = function(e) {
+            if (processed) return;
+            processed = true;
+            
+            clearTimeout(metadataTimeout); // 清除超时
+            console.error(`音频加载错误: ${file.name}`, e);
+            
+            // 尝试使用备用方法处理
+            if (isMp3) {
+                console.log(`尝试使用备用方法处理MP3文件: ${file.name}`);
+                // 使用估算的时长
+                const estimatedDuration = Math.max(180, Math.round(fileSizeMB * 8 / 0.128));
+                
+                // 添加到播放列表
+                addMusicToPlaylist(file.name, audioData, estimatedDuration, window.currentUploadMusicId);
+                
+                // 回调
+                callback(true, estimatedDuration);
+                
+                // 清除当前上传ID
+                window.currentUploadMusicId = null;
+                return;
+            }
+            
+            // 回调
+            callback(false, 0);
+            
+            // 清除当前上传ID
+            window.currentUploadMusicId = null;
+        };
+        
+        audio.src = audioData;
+    };
+    
+    reader.onerror = function(e) {
+        console.error(`文件读取错误: ${file.name}`, e);
+        alert(`文件 ${file.name} 读取失败，请重试。`);
+        callback(false, 0);
+        
+        // 清除当前上传ID
+        window.currentUploadMusicId = null;
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+// 添加音乐到播放列表
+async function addMusicToPlaylist(fileName, audioData, duration, musicId = null) {
+    const musicItem = {
+        id: musicId || Date.now().toString(),
+        name: fileName.replace(/\.[^/.]+$/, ""), // 移除扩展名
+        duration: duration,
+        addedDate: new Date().toISOString()
+    };
+    
+    // 检查是否是URL类型的音乐
+    if (audioData.startsWith('http://') || audioData.startsWith('https://')) {
+        // URL类型音乐，直接存储URL
+        musicItem.data = audioData;
+        musicItem.isURL = true;
+        console.log(`添加URL音乐: ${musicItem.name}`);
+    } else if (musicDB) {
+        // 本地音频文件，保存到IndexedDB
+        try {
+            console.log(`保存音频文件到IndexedDB: ${musicItem.name}`);
+            
+            // 先将音频数据保存到IndexedDB
+            const tempMusicItem = {
+                ...musicItem,
+                data: audioData
+            };
+            
+            await saveMusicToIndexedDB(tempMusicItem);
+            
+            // 标记为IndexedDB存储，不在localStorage中保存音频数据
+            musicItem.isIndexedDB = true;
+            console.log(`音频文件 ${musicItem.name} 已保存到IndexedDB`);
+            
+        } catch (error) {
+            console.error(`保存音频文件到IndexedDB失败: ${musicItem.name}`, error);
+            // 如果IndexedDB保存失败，降级到localStorage
+            console.log('降级到localStorage存储');
+            musicItem.data = audioData;
+        }
+    } else {
+        // IndexedDB不可用，使用localStorage
+        console.log('IndexedDB不可用，使用localStorage存储');
+        musicItem.data = audioData;
+        
+        // 检查数据大小
+        if (audioData.length > 2000000) { // 约2MB
+            console.log(`音频文件 ${fileName} 较大 (${Math.round(audioData.length/1024/1024)}MB)，可能会导致存储问题`);
+        }
+    }
+    
+    // 添加到播放列表
+    dreamData.music.playlist.push(musicItem);
+    
+    // 保存元数据到localStorage
+    saveData();
+    
+    // 更新UI
+    renderPlaylist();
+    
+    // 返回添加的音乐项
+    return musicItem;
+}
+
+// 同步一起听页面的头像
+function syncListenAvatars() {
+    // 左侧头像（我的头像）
+    const leftAvatar = document.getElementById('listen-avatar-left');
+    const leftPlaceholder = document.querySelector('.listen-avatars .avatar-frame.left .avatar-placeholder');
+    
+    if (dreamData.profiles.my.avatar) {
+        leftAvatar.src = dreamData.profiles.my.avatar;
+        leftAvatar.style.display = 'block';
+        if (leftPlaceholder) leftPlaceholder.style.display = 'none';
+    } else {
+        leftAvatar.style.display = 'none';
+        if (leftPlaceholder) leftPlaceholder.style.display = 'flex';
+    }
+    
+    // 右侧头像（恋人的头像）
+    const rightAvatar = document.getElementById('listen-avatar-right');
+    const rightPlaceholder = document.querySelector('.listen-avatars .avatar-frame.right .avatar-placeholder');
+    
+    if (dreamData.profiles.lover.avatar) {
+        rightAvatar.src = dreamData.profiles.lover.avatar;
+        rightAvatar.style.display = 'block';
+        if (rightPlaceholder) rightPlaceholder.style.display = 'none';
+    } else {
+        rightAvatar.style.display = 'none';
+        if (rightPlaceholder) rightPlaceholder.style.display = 'flex';
+    }
+}
+
+// 渲染播放列表
+function renderPlaylist() {
+    const container = document.getElementById('playlist');
+    container.innerHTML = '';
+    
+    if (dreamData.music.playlist.length === 0) {
+        container.innerHTML = '<div class="playlist-empty">还没有音乐，点击"上传音乐"添加吧！</div>';
+        return;
+    }
+    
+    dreamData.music.playlist.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'playlist-item';
+        if (index === dreamData.music.currentIndex) {
+            div.classList.add('active');
+        }
+        
+        const title = document.createElement('div');
+        title.className = 'playlist-title';
+        title.textContent = item.name;
+        
+        const duration = document.createElement('div');
+        duration.className = 'playlist-duration';
+        duration.textContent = formatTime(item.duration);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'playlist-delete';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.title = '删除';
+        deleteBtn.style.width = '24px';
+        deleteBtn.style.height = '24px';
+        deleteBtn.style.borderRadius = '50%';
+        deleteBtn.style.backgroundColor = 'rgba(249, 230, 230, 0.7)';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.color = '#666';
+        deleteBtn.style.fontSize = '14px';
+        deleteBtn.style.display = 'flex';
+        deleteBtn.style.alignItems = 'center';
+        deleteBtn.style.justifyContent = 'center';
+        deleteBtn.style.transition = 'all 0.3s';
+        deleteBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // 阻止事件冒泡，避免触发选中音乐
+            deleteMusicItem(item.id);
+        });
+        
+        div.appendChild(title);
+        div.appendChild(duration);
+        div.appendChild(deleteBtn);
+        
+        div.addEventListener('click', function() {
+            playMusic(index);
+        });
+        
+        container.appendChild(div);
+    });
+}
+
+// 初始化播放器控制
+function initPlayerControls() {
+    console.log('初始化播放器控制');
+    
+    // 如果播放列表中有歌曲，自动播放第一首
+    if (dreamData.music.playlist.length > 0 && dreamData.music.currentIndex === -1) {
+        console.log('播放列表中有歌曲，准备自动播放第一首');
+        setTimeout(() => {
+            playMusic(0);
+        }, 1000);
+    }
+    
+    // 播放/暂停按钮
+    const playPauseBtn = document.getElementById('play-pause');
+    if (playPauseBtn) {
+        console.log('找到播放/暂停按钮');
+        playPauseBtn.addEventListener('click', function() {
+            console.log('点击播放/暂停按钮');
+            togglePlayPause();
+        });
+        
+        // 增大按钮尺寸，使其更容易点击
+        playPauseBtn.style.fontSize = '24px';
+        playPauseBtn.style.padding = '10px 15px';
+    } else {
+        console.error('未找到播放/暂停按钮');
+    }
+    
+    // 上一首按钮
+    document.getElementById('prev-track').addEventListener('click', function() {
+        playPrevious();
+    });
+    
+    // 下一首按钮
+    document.getElementById('next-track').addEventListener('click', function() {
+        playNext();
+    });
+    
+    // 播放模式切换按钮
+    document.getElementById('play-mode').addEventListener('click', function() {
+        togglePlayMode();
+    });
+    
+    // 更新播放模式图标
+    updatePlayModeIcon();
+    
+    // 添加旋转动画到音乐封面
+    const musicCover = document.querySelector('.music-cover');
+    if (musicCover) {
+        musicCover.classList.add('rotating');
+        if (!audioPlayer || audioPlayer.paused) {
+            musicCover.classList.add('paused');
+        }
+    }
+    
+    // 初始化进度条交互
+    initProgressBar();
+}
+
+// 切换播放模式
+function togglePlayMode() {
+    // 循环切换播放模式：顺序播放 -> 随机播放 -> 单曲循环
+    switch (dreamData.music.playMode) {
+        case 'order':
+            dreamData.music.playMode = 'random';
+            break;
+        case 'random':
+            dreamData.music.playMode = 'single';
+            break;
+        case 'single':
+            dreamData.music.playMode = 'order';
+            break;
+        default:
+            dreamData.music.playMode = 'order';
+    }
+    
+    // 更新播放模式图标
+    updatePlayModeIcon();
+    
+    // 保存设置
+    saveData();
+}
+
+// 更新播放模式图标
+function updatePlayModeIcon() {
+    const playModeIcon = document.getElementById('play-mode-icon');
+    if (!playModeIcon) return;
+    
+    // 根据当前播放模式设置图标
+    switch (dreamData.music.playMode) {
+        case 'order':
+            playModeIcon.innerHTML = '&#8635;'; // 循环箭头
+            playModeIcon.title = '顺序播放';
+            break;
+        case 'random':
+            playModeIcon.innerHTML = '&#8597;'; // 随机箭头
+            playModeIcon.title = '随机播放';
+            break;
+        case 'single':
+            playModeIcon.innerHTML = '&#8634;'; // 单曲循环
+            playModeIcon.title = '单曲循环';
+            break;
+    }
+}
+
+// 已移除从URL添加音乐功能
+
+// 设置音频事件监听器
+function setupAudioEventListeners(player, musicItem) {
+    // 播放结束后自动播放下一首
+    player.addEventListener('ended', function() {
+        // 清除进度条更新
+        clearInterval(progressUpdateInterval);
+        
+        // 根据播放模式决定下一首
+        switch (dreamData.music.playMode) {
+            case 'single':
+                // 单曲循环：重新播放当前歌曲
+                playMusic(dreamData.music.currentIndex);
+                break;
+            case 'random':
+                // 随机播放：播放随机歌曲
+                playRandomNext();
+                break;
+            case 'order':
+            default:
+                // 顺序播放：播放下一首
+                playNext();
+                break;
+        }
+    });
+    
+    // 添加时间更新事件监听器
+    player.addEventListener('timeupdate', function() {
+        updateProgressBar();
+    });
+    
+    // 添加加载完成事件监听器
+    player.addEventListener('loadedmetadata', function() {
+        updateTotalTime();
+    });
+    
+    // 记录开始时间
+    dreamData.music.lastStartTime = Date.now();
+    
+    // 开始计时
+    listenTimeInterval = setInterval(function() {
+        if (player && !player.paused) {
+            dreamData.music.totalListenTime += 1;
+            saveData();
+            
+            // 更新总时长显示
+            const listenHours = document.getElementById('listen-hours');
+            const listenMinutes = document.getElementById('listen-minutes');
+            
+            if (listenHours && listenMinutes) {
+                const totalMinutes = Math.floor(dreamData.music.totalListenTime / 60);
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                
+                listenHours.textContent = hours;
+                listenMinutes.textContent = minutes;
+            }
+        }
+    }, 1000);
+}
+
+// 音频分析器相关变量
+let audioContext = null;
+let analyser = null;
+let audioSource = null;
+let animationFrameId = null;
+
+// 播放音乐
+async function playMusic(index) {
+    if (index < 0 || index >= dreamData.music.playlist.length) {
+        return;
+    }
+    
+    // 停止当前播放的音乐
+    if (audioPlayer) {
+        audioPlayer.pause();
+        clearInterval(listenTimeInterval);
+        
+        // 停止之前的音频分析
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        
+        // 断开之前的音频源
+        if (audioSource) {
+            audioSource.disconnect();
+            audioSource = null;
+        }
+    }
+    
+    // 更新当前索引
+    dreamData.music.currentIndex = index;
+    saveData();
+    
+    const musicItem = dreamData.music.playlist[index];
+    let audioSrc = musicItem.data;
+    
+    // 如果音乐存储在IndexedDB中，需要先加载
+    if (musicItem.isIndexedDB && musicDB) {
+        try {
+            console.log(`从IndexedDB加载音乐: ${musicItem.name}`);
+            audioSrc = await loadMusicFromIndexedDB(musicItem.id);
+        } catch (error) {
+            console.error(`从IndexedDB加载音乐失败: ${musicItem.name}`, error);
+            
+            // 如果从IndexedDB加载失败，尝试使用localStorage中的数据
+            if (musicItem.data && musicItem.data.startsWith('data:')) {
+                console.log('使用localStorage中的备用数据');
+                audioSrc = musicItem.data;
+            } else {
+                // 显示错误并跳到下一首
+                const musicTitle = document.getElementById('music-title');
+                if (musicTitle) {
+                    musicTitle.textContent = '加载失败 - ' + musicItem.name;
+                }
+                alert(`无法加载音乐 "${musicItem.name}"，文件可能已损坏。`);
+                setTimeout(() => {
+                    playNext();
+                }, 1000);
+                return;
+            }
+        }
+    }
+    
+    // 使用HTML中的audio元素
+    audioPlayer = document.getElementById('audio-player');
+    if (!audioPlayer) {
+        // 如果找不到HTML元素，创建新的Audio对象
+        audioPlayer = new Audio();
+    }
+    
+    // 添加错误处理
+    audioPlayer.addEventListener('error', function(e) {
+        console.error('音频播放错误:', e);
+        const musicTitle = document.getElementById('music-title');
+        if (musicTitle) {
+            musicTitle.textContent = '播放失败 - ' + musicItem.name;
+        }
+        
+        // 更新播放按钮状态
+        document.getElementById('play-pause').innerHTML = '▶';
+        
+        // 停止胶片旋转
+        const musicCover = document.querySelector('.music-cover');
+        if (musicCover) {
+            musicCover.classList.add('paused');
+        }
+        
+        // 清除计时器
+        clearInterval(listenTimeInterval);
+        
+        // 尝试播放下一首
+        setTimeout(() => {
+            playNext();
+        }, 2000);
+    });
+    
+    // 播放结束后自动播放下一首
+    audioPlayer.addEventListener('ended', function() {
+        // 清除进度条更新
+        clearInterval(progressUpdateInterval);
+        
+        // 根据播放模式决定下一首
+        switch (dreamData.music.playMode) {
+            case 'single':
+                // 单曲循环：重新播放当前歌曲
+                playMusic(dreamData.music.currentIndex);
+                break;
+            case 'random':
+                // 随机播放：播放随机歌曲
+                playRandomNext();
+                break;
+            case 'order':
+            default:
+                // 顺序播放：播放下一首
+                playNext();
+                break;
+        }
+    });
+    
+    // 添加时间更新事件监听器
+    audioPlayer.addEventListener('timeupdate', function() {
+        updateProgressBar();
+    });
+    
+    // 添加加载完成事件监听器
+    audioPlayer.addEventListener('loadedmetadata', function() {
+        updateTotalTime();
+    });
+    
+    // 音频可以播放时的处理
+    audioPlayer.addEventListener('canplay', function() {
+        console.log('音频可以播放:', musicItem.name);
+    });
+    
+    // 设置音频源
+    audioPlayer.src = audioSrc;
+    
+    // 设置音量确保不是静音
+    audioPlayer.volume = 1.0;
+    
+    // 添加更多日志
+    console.log(`准备播放音频: ${musicItem.name}, 源: ${audioSrc.substring(0, 50)}...`);
+    
+    // 尝试播放
+    const playPromise = audioPlayer.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            // 播放成功
+            console.log('音频播放成功:', musicItem.name);
+            
+            // 添加调试信息
+            console.log('音频状态:', {
+                duration: audioPlayer.duration,
+                volume: audioPlayer.volume,
+                muted: audioPlayer.muted,
+                paused: audioPlayer.paused,
+                src: audioPlayer.src.substring(0, 50) + '...'
+            });
+            
+            // 更新UI
+            document.getElementById('play-pause').innerHTML = '❚❚';
+            
+            // 更新音乐信息显示
+            const musicTitle = document.getElementById('music-title');
+            if (musicTitle) {
+                musicTitle.textContent = musicItem.name;
+            }
+            
+            
+            // 显示封面
+            if (musicItem.coverImage) {
+                displayCoverImage(musicItem.coverImage);
+            } else {
+                // 恢复默认封面
+                const coverImg = document.getElementById('music-cover-img');
+                const placeholder = document.querySelector('.music-cover-placeholder');
+                if (coverImg && placeholder) {
+                    coverImg.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                }
+            }
+            
+            // 更新播放列表选中状态
+            renderPlaylist();
+            
+            // 更新胶片旋转状态
+            const musicCover = document.querySelector('.music-cover');
+            if (musicCover) {
+                musicCover.classList.add('rotating');
+                musicCover.classList.remove('paused');
+            }
+            
+            // 记录开始时间
+            dreamData.music.lastStartTime = Date.now();
+            
+            // 开始计时
+            listenTimeInterval = setInterval(function() {
+                if (audioPlayer && !audioPlayer.paused) {
+                    dreamData.music.totalListenTime += 1;
+                    saveData();
+                    
+                    // 更新总时长显示
+                    const listenHours = document.getElementById('listen-hours');
+                    const listenMinutes = document.getElementById('listen-minutes');
+                    
+                    if (listenHours && listenMinutes) {
+                        const totalMinutes = Math.floor(dreamData.music.totalListenTime / 60);
+                        const hours = Math.floor(totalMinutes / 60);
+                        const minutes = totalMinutes % 60;
+                        
+                        listenHours.textContent = hours;
+                        listenMinutes.textContent = minutes;
+                    }
+                }
+            }, 1000);
+            
+
+            
+        }).catch(error => {
+            // 播放失败
+            console.error('音频播放失败:', error);
+            
+            // 记录更详细的错误信息
+            console.error('音频详情:', {
+                src: audioPlayer.src.substring(0, 50) + '...',
+                type: musicItem.isURL ? 'URL' : (musicItem.isIndexedDB ? 'IndexedDB' : 'Base64'),
+                size: audioSrc.length > 1000 ? Math.round(audioSrc.length/1024) + 'KB' : audioSrc.length + 'B',
+                error: error.toString()
+            });
+            
+            const musicTitle = document.getElementById('music-title');
+            if (musicTitle) {
+                musicTitle.textContent = '播放失败 - ' + musicItem.name;
+            }
+            
+            // 尝试使用备用方法播放
+            if (!musicItem.isURL && audioPlayer.canPlayType('audio/mpeg')) {
+                console.log('尝试使用备用方法播放...');
+                
+                // 创建一个新的audio元素
+                const backupPlayer = new Audio();
+                backupPlayer.src = audioSrc;
+                backupPlayer.volume = 1.0;
+                
+                const backupPromise = backupPlayer.play();
+                if (backupPromise !== undefined) {
+                    backupPromise.then(() => {
+                        console.log('备用播放成功!');
+                        // 替换当前播放器
+                        if (audioPlayer) {
+                            audioPlayer.pause();
+                        }
+                        audioPlayer = backupPlayer;
+                        
+                        // 更新UI
+                        document.getElementById('play-pause').innerHTML = '❚❚';
+                        if (musicTitle) {
+                            musicTitle.textContent = musicItem.name;
+                        }
+                        
+                        // 更新胶片旋转状态
+                        const musicCover = document.querySelector('.music-cover');
+                        if (musicCover) {
+                            musicCover.classList.add('rotating');
+                            musicCover.classList.remove('paused');
+                        }
+                        
+                        // 添加事件监听器
+                        setupAudioEventListeners(backupPlayer, musicItem);
+                        
+                    }).catch(backupError => {
+                        console.error('备用播放也失败:', backupError);
+                        // 显示用户友好的错误信息
+                        alert(`无法播放音乐 "${musicItem.name}"，可能是文件格式不支持或文件已损坏。`);
+                        
+                        // 尝试播放下一首
+                        setTimeout(() => {
+                            playNext();
+                        }, 1000);
+                    });
+                }
+            } else {
+                // 显示用户友好的错误信息
+                alert(`无法播放音乐 "${musicItem.name}"，可能是文件格式不支持或文件已损坏。`);
+                
+                // 尝试播放下一首
+                setTimeout(() => {
+                    playNext();
+                }, 1000);
+            }
+        });
+    }
+}
+
+// 切换播放/暂停
+function togglePlayPause() {
+    if (!audioPlayer || dreamData.music.currentIndex === -1) {
+        // 如果没有正在播放的音乐，播放第一首
+        if (dreamData.music.playlist.length > 0) {
+            playMusic(0);
+        }
+        return;
+    }
+    
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        document.getElementById('play-pause').innerHTML = '❚❚';
+        
+        // 恢复胶片旋转
+        const musicCover = document.querySelector('.music-cover');
+        if (musicCover) {
+            musicCover.classList.remove('paused');
+        }
+        
+        // 记录开始时间
+        dreamData.music.lastStartTime = Date.now();
+    } else {
+        audioPlayer.pause();
+        document.getElementById('play-pause').innerHTML = '▶';
+        
+        // 暂停胶片旋转
+        const musicCover = document.querySelector('.music-cover');
+        if (musicCover) {
+            musicCover.classList.add('paused');
+        }
+        
+        // 清除计时器
+        clearInterval(listenTimeInterval);
+    }
+}
+
+// 播放上一首
+function playPrevious() {
+    if (dreamData.music.playlist.length === 0) {
+        return;
+    }
+    
+    let prevIndex = dreamData.music.currentIndex - 1;
+    if (prevIndex < 0) {
+        prevIndex = dreamData.music.playlist.length - 1;
+    }
+    
+    playMusic(prevIndex);
+}
+
+// 播放下一首
+function playNext() {
+    if (dreamData.music.playlist.length === 0) {
+        return;
+    }
+    
+    let nextIndex = dreamData.music.currentIndex + 1;
+    if (nextIndex >= dreamData.music.playlist.length) {
+        nextIndex = 0;
+    }
+    
+    playMusic(nextIndex);
+}
+
+// 随机播放下一首
+function playRandomNext() {
+    if (dreamData.music.playlist.length === 0) {
+        return;
+    }
+    
+    if (dreamData.music.playlist.length === 1) {
+        // 如果只有一首歌，重新播放当前歌曲
+        playMusic(0);
+        return;
+    }
+    
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * dreamData.music.playlist.length);
+    } while (randomIndex === dreamData.music.currentIndex); // 确保不重复播放当前歌曲
+    
+    playMusic(randomIndex);
+}
+
+// 删除音乐
+async function deleteMusicItem(musicId) {
+    if (!confirm('确定要删除这首音乐吗？')) {
+        return;
+    }
+    
+    const index = dreamData.music.playlist.findIndex(item => item.id === musicId);
+    const musicItem = dreamData.music.playlist[index];
+    
+    // 如果删除的是当前播放的音乐，停止播放
+    if (index === dreamData.music.currentIndex) {
+        if (audioPlayer) {
+            audioPlayer.pause();
+            clearInterval(listenTimeInterval);
+        }
+        dreamData.music.currentIndex = -1;
+        document.getElementById('play-pause').innerHTML = '▶';
+        
+        // 更新音乐标题显示
+        const musicTitle = document.getElementById('music-title');
+        if (musicTitle) {
+            musicTitle.textContent = '未播放音乐';
+        }
+        
+        // 停止胶片旋转
+        const musicCover = document.querySelector('.music-cover');
+        if (musicCover) {
+            musicCover.classList.add('paused');
+        }
+    } else if (index < dreamData.music.currentIndex) {
+        // 如果删除的是当前播放音乐之前的音乐，需要调整当前索引
+        dreamData.music.currentIndex--;
+    }
+    
+    // 如果音乐存储在IndexedDB中，也要从IndexedDB删除
+    if (musicItem && musicItem.isIndexedDB) {
+        try {
+            await deleteMusicFromIndexedDB(musicId);
+            console.log(`已从IndexedDB删除音乐: ${musicItem.name}`);
+        } catch (error) {
+            console.error(`从IndexedDB删除音乐失败: ${musicItem.name}`, error);
+        }
+    }
+    
+    dreamData.music.playlist.splice(index, 1);
+    saveData();
+    renderPlaylist();
+}
+
+// 格式化时间（秒转为分:秒）
+function formatTime(seconds) {
+    seconds = Math.floor(seconds);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+// 迁移旧的信件数据格式
+function migrateLettersData() {
+    let needsSave = false;
+    
+    // 检查是否需要迁移
+    Object.keys(dreamData.letters).forEach(dateStr => {
+        const letterData = dreamData.letters[dateStr];
+        
+        // 如果是旧格式（单个对象而不是数组）
+        if (letterData && !Array.isArray(letterData) && typeof letterData === 'object') {
+            console.log(`迁移日期 ${dateStr} 的信件数据`);
+            
+            // 为旧信件添加ID
+            const migratedLetter = {
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                title: letterData.title || '',
+                content: letterData.content || '',
+                created: letterData.created || new Date().toISOString(),
+                recurring: letterData.recurring || false,
+                isRecurringCopy: letterData.isRecurringCopy || false,
+                originalDate: letterData.originalDate || null
+            };
+            
+            // 转换为数组格式
+            dreamData.letters[dateStr] = [migratedLetter];
+            needsSave = true;
+        }
+    });
+    
+    // 如果有迁移，保存数据
+    if (needsSave) {
+        console.log('信件数据迁移完成，保存数据');
+        saveData();
+    }
+}
+
+// 获取指定日期的所有信件
+function getLettersForDate(dateStr) {
+    const letters = dreamData.letters[dateStr];
+    return Array.isArray(letters) ? letters : [];
+}
+
+// 添加信件到指定日期
+function addLetterToDate(dateStr, letter) {
+    if (!dreamData.letters[dateStr]) {
+        dreamData.letters[dateStr] = [];
+    }
+    
+    // 确保是数组格式
+    if (!Array.isArray(dreamData.letters[dateStr])) {
+        dreamData.letters[dateStr] = [];
+    }
+    
+    // 添加唯一ID
+    letter.id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    
+    dreamData.letters[dateStr].push(letter);
+}
+
+// 从指定日期删除信件
+function removeLetterFromDate(dateStr, letterId) {
+    if (!dreamData.letters[dateStr] || !Array.isArray(dreamData.letters[dateStr])) {
+        return false;
+    }
+    
+    const initialLength = dreamData.letters[dateStr].length;
+    dreamData.letters[dateStr] = dreamData.letters[dateStr].filter(letter => letter.id !== letterId);
+    
+    // 如果数组为空，删除整个日期条目
+    if (dreamData.letters[dateStr].length === 0) {
+        delete dreamData.letters[dateStr];
+    }
+    
+    return dreamData.letters[dateStr] ? dreamData.letters[dateStr].length < initialLength : true;
+}
+
+// 更新指定日期的信件
+function updateLetterInDate(dateStr, letterId, updatedLetter) {
+    if (!dreamData.letters[dateStr] || !Array.isArray(dreamData.letters[dateStr])) {
+        return false;
+    }
+    
+    const letterIndex = dreamData.letters[dateStr].findIndex(letter => letter.id === letterId);
+    if (letterIndex === -1) {
+        return false;
+    }
+    
+    // 保持原有ID
+    updatedLetter.id = letterId;
+    dreamData.letters[dateStr][letterIndex] = updatedLetter;
+    return true;
+}
+
+// 检查指定日期是否有信件
+function hasLettersOnDate(dateStr) {
+    const letters = dreamData.letters[dateStr];
+    return Array.isArray(letters) && letters.length > 0;
+}
+
+// 当前编辑的信件ID（用于编辑模式）
+let currentEditingLetterId = null;
+
+// 初始化信件页面
+function initLetterPage() {
+    // 初始化日历
+    initCalendar();
+    
+    // 添加信件按钮
+    document.getElementById('add-letter').addEventListener('click', function() {
+        if (!selectedDate) {
+            // 如果没有选择日期，默认选择今天
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            selectedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        }
+        
+        // 设置模态框中的日期显示
+        const date = new Date(selectedDate);
+        const formattedDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+        document.getElementById('letter-date-display-modal').textContent = formattedDate;
+        
+        // 清空表单（新建模式）
+        document.getElementById('letter-title').value = '';
+        document.getElementById('letter-content').value = '';
+        document.getElementById('letter-recurring').checked = false;
+        document.getElementById('delete-letter').style.display = 'none';
+        
+        // 重置编辑状态
+        currentEditingLetterId = null;
+        
+        openModal('letter-modal');
+    });
+    
+    // 保存信件按钮
+    document.getElementById('save-letter').addEventListener('click', function() {
+        const title = document.getElementById('letter-title').value.trim();
+        const content = document.getElementById('letter-content').value.trim();
+        const recurring = document.getElementById('letter-recurring').checked;
+        
+        if (!selectedDate) {
+            alert('请先选择一个日期');
+            return;
+        }
+        
+        if (!title) {
+            alert('请输入信件标题');
+            return;
+        }
+        
+        if (!content) {
+            alert('请输入信件内容');
+            return;
+        }
+        
+        const letter = {
+            title: title,
+            content: content,
+            recurring: recurring,
+            created: new Date().toISOString()
+        };
+        
+        if (currentEditingLetterId) {
+            // 编辑模式：更新现有信件
+            updateLetterInDate(selectedDate, currentEditingLetterId, letter);
+        } else {
+            // 新建模式：添加新信件
+            addLetterToDate(selectedDate, letter);
+        }
+        
+        saveData();
+        closeModal('letter-modal');
+        
+        // 更新日历上的标记
+        updateCalendarMarks();
+        
+        // 更新信件预览
+        updateLetterPreview(selectedDate);
+        
+        // 重置编辑状态
+        currentEditingLetterId = null;
+    });
+    
+    // 删除信件按钮
+    document.getElementById('delete-letter').addEventListener('click', function() {
+        if (!selectedDate || !currentEditingLetterId) {
+            alert('没有选中的信件');
+            return;
+        }
+        
+        if (!confirm('确定要删除这封信件吗？')) {
+            return;
+        }
+        
+        // 删除信件
+        removeLetterFromDate(selectedDate, currentEditingLetterId);
+        saveData();
+        closeModal('letter-modal');
+        
+        // 更新日历上的标记
+        updateCalendarMarks();
+        
+        // 更新信件预览
+        updateLetterPreview(selectedDate);
+        
+        // 重置编辑状态
+        currentEditingLetterId = null;
+    });
+    
+    // 取消按钮
+    document.getElementById('cancel-letter').addEventListener('click', function() {
+        closeModal('letter-modal');
+        // 重置编辑状态
+        currentEditingLetterId = null;
+    });
+}
+
+// 初始化日历
+function initCalendar() {
+    // 获取当前日期
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+    
+    // 渲染日历
+    renderCalendar(currentYear, currentMonth);
+    
+    // 添加月份切换按钮事件
+    document.getElementById('prev-month').addEventListener('click', function() {
+        const monthDisplay = document.getElementById('current-month-display');
+        const [year, month] = monthDisplay.dataset.date.split('-').map(Number);
+        
+        let newMonth = month - 1;
+        let newYear = year;
+        
+        if (newMonth < 0) {
+            newMonth = 11;
+            newYear--;
+        }
+        
+        renderCalendar(newYear, newMonth);
+    });
+    
+    document.getElementById('next-month').addEventListener('click', function() {
+        const monthDisplay = document.getElementById('current-month-display');
+        const [year, month] = monthDisplay.dataset.date.split('-').map(Number);
+        
+        let newMonth = month + 1;
+        let newYear = year;
+        
+        if (newMonth > 11) {
+            newMonth = 0;
+            newYear++;
+        }
+        
+        renderCalendar(newYear, newMonth);
+    });
+    
+    // 检查今天是否有信件（包括循环信件）
+    checkTodayLetters();
+}
+
+// 检查今天是否有信件
+function checkTodayLetters() {
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+    
+    // 检查是否有今天的信件
+    if (hasLettersOnDate(todayStr)) {
+        return;
+    }
+    
+    // 检查是否有循环信件
+    Object.keys(dreamData.letters).forEach(dateStr => {
+        const letters = getLettersForDate(dateStr);
+        letters.forEach(letter => {
+            if (letter.recurring) {
+                const letterDate = new Date(dateStr);
+                // 如果月和日相同，则是循环信件
+                if (letterDate.getMonth() === today.getMonth() && letterDate.getDate() === today.getDate()) {
+                    // 创建今天的信件副本
+                    const recurringCopy = {
+                        title: letter.title,
+                        content: letter.content,
+                        recurring: false, // 副本不需要循环
+                        created: new Date().toISOString(),
+                        isRecurringCopy: true, // 标记为循环信件的副本
+                        originalDate: dateStr // 记录原始日期
+                    };
+                    
+                    addLetterToDate(todayStr, recurringCopy);
+                    saveData();
+                }
+            }
+        });
+    });
+}
+
+// 渲染日历
+function renderCalendar(year, month) {
+    const calendarDays = document.getElementById('calendar-days');
+    const monthDisplay = document.getElementById('current-month-display');
+    
+    // 清空日历
+    calendarDays.innerHTML = '';
+    
+    // 设置月份显示
+    const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    monthDisplay.textContent = `${year}年${months[month]}`;
+    monthDisplay.dataset.date = `${year}-${month}`;
+    
+    // 获取当月第一天是星期几
+    const firstDay = new Date(year, month, 1).getDay();
+    
+    // 获取当月天数
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // 获取上个月的天数
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+    
+    // 添加上个月的日期
+    for (let i = firstDay - 1; i >= 0; i--) {
+        const day = daysInPrevMonth - i;
+        const dayElement = createDayElement(day, 'prev-month');
+        calendarDays.appendChild(dayElement);
+    }
+    
+    // 添加当月的日期
+    for (let i = 1; i <= daysInMonth; i++) {
+        const dayElement = createDayElement(i, 'current-month');
+        
+        // 检查是否有信件
+        const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+        if (dreamData.letters[dateStr]) {
+            dayElement.classList.add('has-letter');
+        }
+        
+        // 检查是否是今天
+        const today = new Date();
+        if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+            dayElement.classList.add('today');
+        }
+        
+        // 添加点击事件
+        dayElement.addEventListener('click', function() {
+            // 移除所有选中状态
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            this.classList.add('selected');
+            
+            // 设置选中日期
+            selectedDate = dateStr;
+            
+            // 更新信件预览
+            updateLetterPreview(dateStr);
+        });
+        
+        calendarDays.appendChild(dayElement);
+    }
+    
+    // 添加下个月的日期（填充剩余空间）
+    const totalDays = firstDay + daysInMonth;
+    const remainingDays = 42 - totalDays; // 6行7列 = 42
+    
+    for (let i = 1; i <= remainingDays; i++) {
+        const dayElement = createDayElement(i, 'next-month');
+        calendarDays.appendChild(dayElement);
+    }
+    
+    // 更新日历上的信件标记
+    updateCalendarMarks();
+    
+    // 如果有选中的日期，更新信件预览
+    if (selectedDate) {
+        updateLetterPreview(selectedDate);
+    }
+}
+
+// 创建日历日期元素
+function createDayElement(day, className) {
+    const dayElement = document.createElement('div');
+    dayElement.className = `calendar-day ${className}`;
+    dayElement.textContent = day;
+    return dayElement;
+}
+
+// 更新信件预览
+function updateLetterPreview(dateStr) {
+    const letterDateDisplay = document.getElementById('letter-date-display');
+    const letterTitleDisplay = document.getElementById('letter-title-display');
+    const letterContentPreview = document.getElementById('letter-content-preview');
+    
+    // 格式化日期显示
+    const date = new Date(dateStr);
+    const formattedDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+    letterDateDisplay.textContent = formattedDate;
+    
+    // 获取该日期的所有信件
+    const letters = getLettersForDate(dateStr);
+    
+    if (letters.length === 0) {
+        letterTitleDisplay.textContent = '';
+        letterContentPreview.textContent = '这个日期没有信件，点击"添加信件"按钮创建一封新信件。';
+        return;
+    }
+    
+    // 显示信件数量
+    if (letters.length === 1) {
+        letterTitleDisplay.textContent = letters[0].title || '';
+    } else {
+        letterTitleDisplay.textContent = `共有 ${letters.length} 封信件`;
+    }
+    
+    // 清空预览容器
+    letterContentPreview.innerHTML = '';
+    
+    // 显示所有信件
+    letters.forEach((letter, index) => {
+        const letterDiv = document.createElement('div');
+        letterDiv.className = 'letter-item';
+        letterDiv.style.marginBottom = '20px';
+        letterDiv.style.padding = '15px';
+        letterDiv.style.border = '1px solid #f9e6e6';
+        letterDiv.style.borderRadius = '10px';
+        letterDiv.style.backgroundColor = '#fff';
+        letterDiv.style.cursor = 'pointer';
+        letterDiv.style.transition = 'all 0.3s';
+        
+        // 鼠标悬停效果
+        letterDiv.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#f9f9f9';
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+        });
+        
+        letterDiv.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#fff';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+        
+        // 信件标题
+        const titleDiv = document.createElement('div');
+        titleDiv.style.fontWeight = 'bold';
+        titleDiv.style.marginBottom = '10px';
+        titleDiv.style.color = '#555';
+        titleDiv.style.fontSize = '1.1em';
+        
+        if (letters.length > 1) {
+            titleDiv.textContent = `${index + 1}. ${letter.title || '无标题'}`;
+        } else {
+            titleDiv.textContent = letter.title || '无标题';
+        }
+        
+        // 信件内容预览（只显示第一行）
+        const contentDiv = document.createElement('div');
+        contentDiv.style.color = '#666';
+        contentDiv.style.lineHeight = '1.6';
+        contentDiv.style.marginBottom = '10px';
+        
+        // 获取第一行内容
+        let content = letter.content || '';
+        const firstLine = content.split('\n')[0];
+        contentDiv.textContent = firstLine;
+        
+        // 信件信息
+        const infoDiv = document.createElement('div');
+        infoDiv.style.fontSize = '0.9em';
+        infoDiv.style.color = '#999';
+        infoDiv.style.borderTop = '1px dashed #eee';
+        infoDiv.style.paddingTop = '8px';
+        
+        const createdDate = new Date(letter.created);
+        const timeStr = `${createdDate.getFullYear()}-${(createdDate.getMonth() + 1).toString().padStart(2, '0')}-${createdDate.getDate().toString().padStart(2, '0')} ${createdDate.getHours().toString().padStart(2, '0')}:${createdDate.getMinutes().toString().padStart(2, '0')}`;
+        
+        let infoText = `创建时间: ${timeStr}`;
+        if (letter.recurring) {
+            infoText += ' | 循环信件';
+        }
+        if (letter.isRecurringCopy) {
+            const originalDate = new Date(letter.originalDate);
+            const originalYear = originalDate.getFullYear();
+            infoText += ` | 循环副本 (原始: ${originalYear}年)`;
+        }
+        
+        infoDiv.textContent = infoText;
+        
+        // 组装信件元素
+        letterDiv.appendChild(titleDiv);
+        letterDiv.appendChild(contentDiv);
+        letterDiv.appendChild(infoDiv);
+        
+        // 创建编辑按钮
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn-icon';
+        editBtn.innerHTML = '✎';
+        editBtn.title = '编辑';
+        editBtn.style.position = 'absolute';
+        editBtn.style.top = '10px';
+        editBtn.style.right = '10px';
+        editBtn.style.backgroundColor = 'transparent';
+        editBtn.style.border = 'none';
+        editBtn.style.cursor = 'pointer';
+        editBtn.style.color = '#999';
+        editBtn.style.fontSize = '1.1em';
+        
+        // 点击编辑按钮编辑信件
+        editBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // 阻止事件冒泡，避免触发信件点击
+            editLetter(dateStr, letter.id);
+        });
+        
+        // 设置相对定位以便放置编辑按钮
+        letterDiv.style.position = 'relative';
+        letterDiv.appendChild(editBtn);
+        
+        // 点击信件显示阅读模式
+        letterDiv.addEventListener('click', function() {
+            showLetterReadMode(letter);
+        });
+        
+        letterContentPreview.appendChild(letterDiv);
+    });
+}
+
+// 显示信件阅读模式
+function showLetterReadMode(letter) {
+    // 创建阅读模式模态框
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    
+    const modalTitle = document.createElement('h3');
+    modalTitle.className = 'modal-title';
+    modalTitle.textContent = letter.title || '无标题';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    
+    modalHeader.appendChild(modalTitle);
+    modalHeader.appendChild(closeBtn);
+    
+    const modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    
+    // 添加滚动容器
+    const scrollContainer = document.createElement('div');
+    scrollContainer.style.maxHeight = '60vh'; // 设置最大高度
+    scrollContainer.style.overflowY = 'auto'; // 启用垂直滚动
+    scrollContainer.style.padding = '5px'; // 添加内边距
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.style.whiteSpace = 'pre-wrap';
+    contentDiv.style.lineHeight = '1.6';
+    contentDiv.textContent = letter.content || '';
+    
+    // 添加创建时间信息
+    const infoDiv = document.createElement('div');
+    infoDiv.style.fontSize = '0.9em';
+    infoDiv.style.color = '#999';
+    infoDiv.style.marginTop = '20px';
+    infoDiv.style.borderTop = '1px dashed #eee';
+    infoDiv.style.paddingTop = '10px';
+    
+    const createdDate = new Date(letter.created);
+    const timeStr = `${createdDate.getFullYear()}-${(createdDate.getMonth() + 1).toString().padStart(2, '0')}-${createdDate.getDate().toString().padStart(2, '0')} ${createdDate.getHours().toString().padStart(2, '0')}:${createdDate.getMinutes().toString().padStart(2, '0')}`;
+    
+    let infoText = `创建时间: ${timeStr}`;
+    if (letter.recurring) {
+        infoText += ' | 循环信件';
+    }
+    if (letter.isRecurringCopy) {
+        const originalDate = new Date(letter.originalDate);
+        const originalYear = originalDate.getFullYear();
+        infoText += ` | 循环副本 (原始: ${originalYear}年)`;
+    }
+    
+    infoDiv.textContent = infoText;
+    
+    // 将内容和信息添加到滚动容器中
+    scrollContainer.appendChild(contentDiv);
+    scrollContainer.appendChild(infoDiv);
+    
+    // 将滚动容器添加到模态框主体
+    modalBody.appendChild(scrollContainer);
+    
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modal.appendChild(modalContent);
+    
+    // 点击模态框背景关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    document.body.appendChild(modal);
+}
+
+// 编辑信件函数
+function editLetter(dateStr, letterId) {
+    const letters = getLettersForDate(dateStr);
+    const letter = letters.find(l => l.id === letterId);
+    
+    if (!letter) {
+        alert('找不到指定的信件');
+        return;
+    }
+    
+    // 设置选中日期
+    selectedDate = dateStr;
+    
+    // 设置模态框中的日期显示
+    const date = new Date(dateStr);
+    const formattedDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+    document.getElementById('letter-date-display-modal').textContent = formattedDate;
+    
+    // 填充表单
+    document.getElementById('letter-title').value = letter.title || '';
+    document.getElementById('letter-content').value = letter.content || '';
+    document.getElementById('letter-recurring').checked = letter.recurring || false;
+    
+    // 显示删除按钮
+    document.getElementById('delete-letter').style.display = 'block';
+    
+    // 设置编辑状态
+    currentEditingLetterId = letterId;
+    
+    openModal('letter-modal');
+}
+
+// 更新日历上的信件标记
+function updateCalendarMarks() {
+    document.querySelectorAll('.calendar-day').forEach(day => {
+        day.classList.remove('has-letter');
+    });
+    
+    const monthDisplay = document.getElementById('current-month-display');
+    const [year, month] = monthDisplay.dataset.date.split('-').map(Number);
+    
+    // 遍历所有信件，标记日历上的日期
+    Object.keys(dreamData.letters).forEach(dateStr => {
+        const letters = getLettersForDate(dateStr);
+        if (letters.length > 0) {
+            const date = new Date(dateStr);
+            
+            if (date.getFullYear() === year && date.getMonth() === month) {
+                const day = date.getDate();
+                const dayElements = document.querySelectorAll('.calendar-day.current-month');
+                
+                dayElements.forEach(element => {
+                    if (parseInt(element.textContent) === day) {
+                        element.classList.add('has-letter');
+                    }
+                });
+            }
+        }
+    });
+    
+    // 检查循环信件
+    // 获取当前月份的所有日期
+    for (let day = 1; day <= 31; day++) {
+        // 检查日期是否有效
+        const checkDate = new Date(year, month, day);
+        if (checkDate.getMonth() !== month) continue; // 跳过无效日期
+        
+        // 检查是否已经有信件
+        const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        if (hasLettersOnDate(dateStr)) continue; // 已有信件，跳过
+        
+        // 检查是否有循环信件
+        let hasRecurring = false;
+        Object.keys(dreamData.letters).forEach(letterDateStr => {
+            const letters = getLettersForDate(letterDateStr);
+            letters.forEach(letter => {
+                if (letter.recurring) {
+                    const letterDate = new Date(letterDateStr);
+                    // 如果月和日相同，则是循环信件
+                    if (letterDate.getMonth() === month && letterDate.getDate() === day) {
+                        hasRecurring = true;
+                    }
+                }
+            });
+        });
+        
+        if (hasRecurring) {
+            // 标记有循环信件的日期
+            const dayElements = document.querySelectorAll('.calendar-day.current-month');
+            dayElements.forEach(element => {
+                if (parseInt(element.textContent) === day) {
+                    element.classList.add('has-letter');
+                }
+            });
+        }
+    }
+}
+
+// 初始化模态框
+function initModals() {
+    // 关闭模态框按钮
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const modalId = this.closest('.modal').id;
+            closeModal(modalId);
+        });
+    });
+    
+    // 点击模态框背景关闭
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this.id);
+            }
+        });
+    });
+}
+
+// 打开模态框
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+
+// 关闭模态框
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// ==================== IndexedDB 音乐存储功能 ====================
+
+// 初始化音乐数据库
+function initMusicDB() {
+    return new Promise((resolve, reject) => {
+        // 检查浏览器是否支持IndexedDB
+        if (!window.indexedDB) {
+            console.log('浏览器不支持IndexedDB，将使用localStorage作为备选方案');
+            resolve(null);
+            return;
+        }
+
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onerror = function(event) {
+            console.error('IndexedDB初始化失败:', event.target.error);
+            resolve(null); // 不拒绝，而是解析为null，这样可以降级到localStorage
+        };
+
+        request.onsuccess = function(event) {
+            musicDB = event.target.result;
+            console.log('IndexedDB初始化成功');
+            resolve(musicDB);
+        };
+
+        request.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            
+            // 创建音乐文件存储
+            if (!db.objectStoreNames.contains(MUSIC_STORE)) {
+                const musicStore = db.createObjectStore(MUSIC_STORE, { keyPath: 'id' });
+                musicStore.createIndex('name', 'name', { unique: false });
+                musicStore.createIndex('addedDate', 'addedDate', { unique: false });
+                console.log('创建音乐存储对象');
+            }
+        };
+    });
+}
+
+// 保存音乐文件到IndexedDB
+async function saveMusicToIndexedDB(musicItem) {
+    return new Promise((resolve, reject) => {
+        if (!musicDB) {
+            reject(new Error('IndexedDB未初始化'));
+            return;
+        }
+
+        const transaction = musicDB.transaction([MUSIC_STORE], 'readwrite');
+        const store = transaction.objectStore(MUSIC_STORE);
+        
+        // 如果是URL类型的音乐，不需要存储到IndexedDB
+        if (musicItem.isURL) {
+            resolve(musicItem);
+            return;
+        }
+
+        // 将base64数据转换为Blob以节省空间
+        const audioBlob = dataURLToBlob(musicItem.data);
+        const musicData = {
+            id: musicItem.id,
+            name: musicItem.name,
+            audioBlob: audioBlob,
+            duration: musicItem.duration,
+            addedDate: musicItem.addedDate,
+            originalSize: musicItem.data.length
+        };
+
+        const request = store.put(musicData);
+
+        request.onsuccess = function() {
+            console.log(`音乐 "${musicItem.name}" 已保存到IndexedDB`);
+            resolve(musicItem);
+        };
+
+        request.onerror = function(event) {
+            console.error('保存音乐到IndexedDB失败:', event.target.error);
+            reject(event.target.error);
+        };
+    });
+}
+
+// 从IndexedDB加载音乐文件
+async function loadMusicFromIndexedDB(musicId) {
+    return new Promise((resolve, reject) => {
+        if (!musicDB) {
+            reject(new Error('IndexedDB未初始化'));
+            return;
+        }
+
+        const transaction = musicDB.transaction([MUSIC_STORE], 'readonly');
+        const store = transaction.objectStore(MUSIC_STORE);
+        const request = store.get(musicId);
+
+        request.onsuccess = function() {
+            const result = request.result;
+            if (result) {
+                // 将Blob转换回data URL
+                const reader = new FileReader();
+                reader.onload = function() {
+                    resolve(reader.result);
+                };
+                reader.onerror = function() {
+                    reject(new Error('读取音频数据失败'));
+                };
+                reader.readAsDataURL(result.audioBlob);
+            } else {
+                reject(new Error('音乐文件未找到'));
+            }
+        };
+
+        request.onerror = function(event) {
+            reject(event.target.error);
+        };
+    });
+}
+
+// 从IndexedDB删除音乐文件
+async function deleteMusicFromIndexedDB(musicId) {
+    return new Promise((resolve, reject) => {
+        if (!musicDB) {
+            resolve(); // 如果没有IndexedDB，直接成功
+            return;
+        }
+
+        const transaction = musicDB.transaction([MUSIC_STORE], 'readwrite');
+        const store = transaction.objectStore(MUSIC_STORE);
+        const request = store.delete(musicId);
+
+        request.onsuccess = function() {
+            console.log(`音乐ID ${musicId} 已从IndexedDB删除`);
+            resolve();
+        };
+
+        request.onerror = function(event) {
+            console.error('从IndexedDB删除音乐失败:', event.target.error);
+            reject(event.target.error);
+        };
+    });
+}
+
+// 获取IndexedDB中所有音乐的元数据
+async function getAllMusicMetadata() {
+    return new Promise((resolve, reject) => {
+        if (!musicDB) {
+            resolve([]);
+            return;
+        }
+
+        const transaction = musicDB.transaction([MUSIC_STORE], 'readonly');
+        const store = transaction.objectStore(MUSIC_STORE);
+        const request = store.getAll();
+
+        request.onsuccess = function() {
+            const results = request.result.map(item => ({
+                id: item.id,
+                name: item.name,
+                duration: item.duration,
+                addedDate: item.addedDate,
+                originalSize: item.originalSize
+            }));
+            resolve(results);
+        };
+
+        request.onerror = function(event) {
+            reject(event.target.error);
+        };
+    });
+}
+
+// 迁移音乐数据到IndexedDB
+async function migrateMusicToIndexedDB() {
+    if (!musicDB || dreamData.music.playlist.length === 0) {
+        return;
+    }
+
+    console.log('开始迁移音乐数据到IndexedDB...');
+    
+    // 获取已存在的音乐元数据
+    const existingMusic = await getAllMusicMetadata().catch(() => []);
+    const existingIds = new Set(existingMusic.map(item => item.id));
+
+    let migratedCount = 0;
+    const musicToMigrate = dreamData.music.playlist.filter(item => 
+        !item.isURL && !existingIds.has(item.id) && item.data && item.data.startsWith('data:')
+    );
+
+    for (const musicItem of musicToMigrate) {
+        try {
+            await saveMusicToIndexedDB(musicItem);
+            migratedCount++;
+            
+            // 从localStorage中移除音频数据，只保留元数据
+            const playlistIndex = dreamData.music.playlist.findIndex(item => item.id === musicItem.id);
+            if (playlistIndex !== -1) {
+                dreamData.music.playlist[playlistIndex] = {
+                    id: musicItem.id,
+                    name: musicItem.name,
+                    duration: musicItem.duration,
+                    addedDate: musicItem.addedDate,
+                    isIndexedDB: true // 标记为IndexedDB存储
+                };
+            }
+        } catch (error) {
+            console.error(`迁移音乐 "${musicItem.name}" 失败:`, error);
+        }
+    }
+
+    if (migratedCount > 0) {
+        console.log(`成功迁移 ${migratedCount} 首音乐到IndexedDB`);
+        saveData(); // 保存更新后的播放列表元数据
+    }
+}
+
+// 工具函数：将data URL转换为Blob
+function dataURLToBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+
+// 工具函数：将Blob转换为data URL
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function() {
+            resolve(reader.result);
+        };
+        reader.onerror = function() {
+            reject(new Error('Blob转换失败'));
+        };
+        reader.readAsDataURL(blob);
+    });
+}
+
+
+// ==================== 装饰文字功能 ====================
+
+// 加载装饰文字
+function loadDecorativeTexts() {
+    // 如果没有保存的装饰文字数据，使用默认值
+    if (!dreamData.decorativeTexts || !Array.isArray(dreamData.decorativeTexts) || dreamData.decorativeTexts.length === 0) {
+        // 获取默认文字
+        const defaultTexts = [];
+        document.querySelectorAll('.mood-line').forEach(element => {
+            defaultTexts.push(element.textContent);
+        });
+        dreamData.decorativeTexts = defaultTexts;
+        saveData();
+    }
+    
+    // 将保存的文字应用到页面
+    const moodLines = document.querySelectorAll('.mood-line');
+    dreamData.decorativeTexts.forEach((text, index) => {
+        if (index < moodLines.length) {
+            moodLines[index].textContent = text;
+        }
+    });
+}
+
+// 初始化装饰文字
+function initDecorativeTexts() {
+    // 为每个装饰文字元素添加事件监听器
+    document.querySelectorAll('.mood-line').forEach((element, index) => {
+        element.addEventListener('input', function() {
+            // 更新数据
+            if (index < dreamData.decorativeTexts.length) {
+                dreamData.decorativeTexts[index] = this.textContent;
+            } else {
+                dreamData.decorativeTexts.push(this.textContent);
+            }
+            // 保存到本地存储
+            saveData();
+        });
+        
+        // 添加失去焦点事件，确保在编辑完成后保存
+        element.addEventListener('blur', function() {
+            // 更新数据
+            if (index < dreamData.decorativeTexts.length) {
+                dreamData.decorativeTexts[index] = this.textContent;
+            } else {
+                dreamData.decorativeTexts.push(this.textContent);
+            }
+            // 保存到本地存储
+            saveData();
+        });
+    });
+}
+
+// ==================== 进度条功能 ====================
+
+// 初始化进度条
+function initProgressBar() {
+    const progressBar = document.getElementById('progress-bar');
+    const progressContainer = document.querySelector('.progress-bar-container');
+    
+    if (!progressBar || !progressContainer) {
+        return;
+    }
+    
+    // 添加点击事件，允许用户点击进度条跳转
+    progressContainer.addEventListener('click', function(e) {
+        if (!audioPlayer || !audioPlayer.duration) {
+            return;
+        }
+        
+        const rect = progressContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percentage = clickX / rect.width;
+        const newTime = percentage * audioPlayer.duration;
+        
+        audioPlayer.currentTime = newTime;
+        updateProgressBar();
+    });
+    
+    // 添加拖拽功能
+    let isDragging = false;
+    const progressHandle = document.getElementById('progress-handle');
+    
+    if (progressHandle) {
+        progressHandle.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging || !audioPlayer || !audioPlayer.duration) {
+                return;
+            }
+            
+            const rect = progressContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const percentage = Math.max(0, Math.min(1, mouseX / rect.width));
+            const newTime = percentage * audioPlayer.duration;
+            
+            audioPlayer.currentTime = newTime;
+            updateProgressBar();
+        });
+        
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+    }
+}
+
+// 更新进度条
+function updateProgressBar() {
+    if (!audioPlayer || !audioPlayer.duration) {
+        return;
+    }
+    
+    const currentTime = audioPlayer.currentTime;
+    const duration = audioPlayer.duration;
+    const percentage = (currentTime / duration) * 100;
+    
+    // 更新进度条填充
+    const progressFill = document.getElementById('progress-fill');
+    if (progressFill) {
+        progressFill.style.width = `${percentage}%`;
+    }
+    
+    // 更新进度条手柄位置
+    const progressHandle = document.getElementById('progress-handle');
+    if (progressHandle) {
+        progressHandle.style.left = `${percentage}%`;
+    }
+    
+    // 更新当前时间显示
+    const currentTimeDisplay = document.getElementById('current-time');
+    if (currentTimeDisplay) {
+        currentTimeDisplay.textContent = formatTime(currentTime);
+    }
+}
+
+// 更新总时长显示
+function updateTotalTime() {
+    if (!audioPlayer || !audioPlayer.duration) {
+        return;
+    }
+    
+    const totalTimeDisplay = document.getElementById('total-time');
+    if (totalTimeDisplay) {
+        totalTimeDisplay.textContent = formatTime(audioPlayer.duration);
+    }
+}
+
+    </script>
+</body>
+</html>
